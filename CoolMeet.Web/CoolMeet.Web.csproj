@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>CoolMeet.Web</AssemblyName>
+    <RootNamespace>CoolMeet.Web</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ViewModels\**" />
+    <Compile Remove="wwwroot\**" />
+    <Content Remove="ViewModels\**" />
+    <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="ViewModels\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="ViewModels\**" />
+    <None Remove="wwwroot\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="appsettings.Development.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="appsettings.Development.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CoolMeet.BL\CoolMeet.BL.csproj" />
+    <ProjectReference Include="..\CoolMeet.Models\CoolMeet.Models.csproj" />
+    <ProjectReference Include="..\CoolMeet.Repository\CoolMeet.Repository.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CoolMeet.Models\CoolMeet.Models.csproj" />
+    <ProjectReference Include="..\CoolMeet.Repository\CoolMeet.Repository.csproj" />
+  </ItemGroup>
+
+</Project>

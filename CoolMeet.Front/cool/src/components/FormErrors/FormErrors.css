@@ -1,0 +1,9 @@
+.formErrors{
+    color: rgb(123, 11, 11);
+    font-weight: bold;
+    padding: 10px;
+}
+
+p{
+    margin-bottom: 8px !important;
+}
