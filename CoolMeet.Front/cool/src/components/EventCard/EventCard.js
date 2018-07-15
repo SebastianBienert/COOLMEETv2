@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import {BASE_URL} from "../constants";
 import AuthService from '../AuthService';
 import './EventCard.css';
-
+import {Panel, Col, Row, Button} from 'react-bootstrap';
 
 class EventCard extends React.Component {
 
@@ -76,21 +76,22 @@ class EventCard extends React.Component {
     getButtonJoinOrLeave = () => {
         if (this.state.userAlreadyJoined) {
             return(        
-            <button type="button" className="btn btn-danger btnStyle" onClick={this.leaveUserFromEvent} >
+            <Button type="button" bsStyle="danger" className="btnStyle" onClick={this.leaveUserFromEvent} >
                 Wyjdz
                 <span className="glyphicon glyphicon-remove"></span>                
-            </button>
+            </Button>
             )
         }
         else if(this.state.statusUnavailable) {
-            <button type="button" disabled className="btn btn-success btnStyle" onClick={this.joinToEvent}>Dołącz</button>
+            <Button type="button" disabled bsStyle="success" className="btnStyle" onClick={this.joinToEvent}>Dołącz</Button>
         }
-        return <button type="button" disabled={this.state.userAlreadyJoined || this.state.statusUnavailable} className="btn btn-success btnStyle" onClick={this.joinToEvent}>Dołącz</button>
+        return <Button type="button" disabled={this.state.userAlreadyJoined || this.state.statusUnavailable} bsStyle="success" className="btnStyle" onClick={this.joinToEvent}>Dołącz</Button>
     }
 
     getTitle = () => {
         console.log("tutaj")
-        if(this.props.event.administrator.id === this.AuthService.getUserInformation().id)
+        
+        if(this.props.event.administrator && this.props.event.administrator.id === this.AuthService.getUserInformation().id)
         {
             return(
                 <Link to={`/eventAdministrationPanel/${this.props.event.id}`} >  
@@ -109,8 +110,8 @@ class EventCard extends React.Component {
     render(){
     return (
 
-		<div className="card">
-			<div className="card-body">
+		<Panel>
+			<Panel.Body>
 				<span className="card-meta pull-right">{new Date(this.props.event.startDate).toDateString("llll")} - {new Date(this.props.event.endDate).toDateString()}</span>
 				<h4 className="title">
                     {this.getTitle()}
@@ -123,16 +124,16 @@ class EventCard extends React.Component {
                 <p className="summary pull-right"> 
                     {this.AuthService.loggedIn() && 
                     <Link to={`/eventInfo/${this.props.event.id}`} >  
-                        <button type="button" className="btn btn-dark btnStyle">
+                        <Button type="button" bsStyle="info">
                             Info
                             <span className="glyphicon glyphicon-info-sign"></span>
-                        </button>
+                        </Button>
                     </Link>}
                     {this.getButtonJoinOrLeave()} 
                     
                 </p>
-			</div>  
-		</div>
+			</Panel.Body>  
+		</Panel>
       );
     }
 }

@@ -5,10 +5,10 @@ import { BASE_URL } from "../constants";
 import withAuth from '../withAuth';
 import AuthService from '../AuthService';
 import ceil from 'ceil';
+import {Panel, Col, Row, Button, FormGroup, ControlLabel, FormControl, Checkbox} from 'react-bootstrap';
 import EventListComponent from '../EventListComponent/EventListComponent';
-import { withRouter} from 'react-router-dom'
 
-class LoggedUserEventList extends React.Component {
+class AllEvents extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -22,14 +22,14 @@ class LoggedUserEventList extends React.Component {
             status: 0
         };
         this.AuthService = new AuthService(BASE_URL);
-        this.updateList()
+        this.fetchEventList()
     }
 
-    updateList = () => {
-        axios.get(BASE_URL + `/Event/GetLoggedUserEvents`)
+    fetchEventList = () => {
+        axios.get(BASE_URL + "/Event")
         .then(response => {
-            this.setState({             
-                events: response.data 
+            this.setState({
+                events: response.data
             });
         })
         .catch(error => console.log(error));
@@ -39,9 +39,8 @@ class LoggedUserEventList extends React.Component {
         const tommorow = new Date(d);
         tommorow.setDate(tommorow.getDate() + 1);
         const tommorowStringDate = tommorow.toISOString();
-        axios.get(BASE_URL + `/Event/GetLoggedUserEvents`, this.AuthService.getConfigForAuthorize())
+        axios.get(BASE_URL + "/Event", this.AuthService.getConfigForAuthorize())
             .then(response => {
-                console.log(response)
                 this.setState({
                     events: response.data,
                     dateBefore: tommorowStringDate.substring(0, 16),
@@ -53,15 +52,13 @@ class LoggedUserEventList extends React.Component {
     }
 
     render() {
-        console.log("Sending: ", this.state)
-        return(
-            <EventListComponent name = "XD"
-                                events={this.state.events}
-                                dateBefore = {this.state.dateBefore}
-                                dateAfter = {this.state.dateAfter}
-                                filter = {this.state.filter}
+        return( <EventListComponent events={this.state.events}
+                                    dateBefore = {this.state.dateBefore}
+                                    dateAfter = {this.state.dateAfter}
+                                    filter = {this.state.filter}
                                 />
-        )
+       )
     }
+    
 }
-export default withAuth(withRouter(LoggedUserEventList));
+export default withAuth(AllEvents);

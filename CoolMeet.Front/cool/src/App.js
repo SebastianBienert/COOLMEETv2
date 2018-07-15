@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import BoardAddEvent from './components/BoardAddEvent'
-import EventsList from './components/EventsList/EventsList'
 import Sidebar from './components/Sidebar/Sidebar'
 import LoginPage from './components/LoginPage/LoginPage'
 import EventInfo from './components/EventInfo/EventInfo';
@@ -14,6 +13,7 @@ import EventAdminPanel from './components/EventAdminPanel/EventAdminPanel';
 import EditEvent from './components/EditEvent/EditEvent';
 import moment from 'moment';
 import 'moment/locale/pl';
+import AllEvents from './components/AllEvents/AllEvents';
 class App extends Component {
 
   constructor(){
@@ -47,23 +47,23 @@ class App extends Component {
   render() {
       return (
         <Router>
-          <div className="row row-flex row-flex-wrap ">
-            <div className="col-3">
-              <Sidebar history="/"/>
+        <div className="container-fluid">
+        <Sidebar history="/"/>
+          <div className="row">
+            <div className="col-12">
+              <Switch>
+                <Route exact path="/" component={LoginPage} />
+                <Route path="/LoggedUserEventList" component={LoggedUserEventList} />
+                <Route path="/events" component={AllEvents} /> 
+                <Route path="/newEvent" component={BoardAddEvent}/>
+                <Route path="/login" component={LoginPage}/>
+                <Route path="/register" component={RegisterPage}/>
+                <Route path="/eventInfo/:id" component={EventInfo} />
+                <Route path="/eventAdministrationPanel/:id" component={EventAdminPanel} />
+                <Route path="/editEvent/:id" component={EditEvent} />
+              </Switch>
             </div>
-            <div className="col-8">
-            <Switch>
-              <Route exact path="/" component={LoginPage} />
-              <Route path="/LoggedUserEventList" component={LoggedUserEventList} />
-              <Route path="/events" component={EventsList} /> 
-              <Route path="/newEvent" component={BoardAddEvent}/>
-              <Route path="/login" component={LoginPage}/>
-              <Route path="/register" component={RegisterPage}/>
-              <Route path="/eventInfo/:id" component={EventInfo} />
-              <Route path="/eventAdministrationPanel/:id" component={EventAdminPanel} />
-              <Route path="/editEvent/:id" component={EditEvent} />
-            </Switch>
-            </div>
+          </div>
         </div>
         </Router>
       );

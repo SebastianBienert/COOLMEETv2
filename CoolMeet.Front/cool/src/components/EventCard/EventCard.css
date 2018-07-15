@@ -1,34 +1,38 @@
-     .card
+     .panel
      {
          margin: 5px;
      }
      
-     .card-body {
+     .panel-body {
         display: block;
     }
-     .card-meta {
+     .panel-meta {
         font-size: 11px;
         color: #999;
     }
-     .card .title {
+     .panel .title {
         color: #2BBCDE;
         font-size: 20px;
         font-weight: bold;
         line-height: normal;
         margin: 0;
     }
-     .card .title span {
+     .panel .title span {
         font-size: .7em;
         margin-right: 20px;
     }
-     .card .title span.active {
+     .panel .title span.active {
         color: #5cb85c;
     }
-     .card .title span.inactive {
+     .panel .title span.inactive {
         color: #d9534f;
     }
-     .card .summary {
+     .panel .summary {
         font-size: 14px;
+    }
+
+    .panel .glyphicon{
+        padding: 5px;
     }
 
     .btn{

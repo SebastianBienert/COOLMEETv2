@@ -4,9 +4,9 @@ import {BASE_URL} from 'constants';
 export default function withAuth(AuthComponent) {
     const service = new AuthService(BASE_URL);
     return class AuthWrapped extends Component{
-        constructor()
+        constructor(props)
         {
-            super();
+            super(props);
             this.state ={
                 user: null
             }
@@ -31,7 +31,7 @@ export default function withAuth(AuthComponent) {
         render(){
             if (this.state.user) {
                 return (
-                    <AuthComponent history={this.props.history} user={this.state.user} />
+                    <AuthComponent {...this.props} history={this.props.history} user={this.state.user} />
                 )
             }
             else {

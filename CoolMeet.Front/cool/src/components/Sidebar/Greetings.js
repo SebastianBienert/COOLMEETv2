@@ -12,7 +12,7 @@ class Greetings extends React.Component{
 
     render(){
         return(
-            <h4 class="text-center capitalize-text"> Witaj {this.state.userInformation.firstName} {this.state.userInformation.lastName}!</h4>
+            <h4 className="text-center" style={{ textTransform: 'capitalize' }} > Witaj {this.state.userInformation.firstName} {this.state.userInformation.lastName}!</h4>
         );
     }
 }
