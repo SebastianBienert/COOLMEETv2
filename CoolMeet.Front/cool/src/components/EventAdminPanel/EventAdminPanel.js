@@ -5,7 +5,7 @@ import withAuth from '../withAuth';
 import AuthService from '../AuthService';
 import '../EventAdminPanel/EventAdminPanel.css';
 import { withRouter, Link } from 'react-router-dom'
-
+import {Grid, Panel, Col, Row, Button} from 'react-bootstrap';
 class EventAdminPanel extends React.Component {
     constructor(props) {
         super(props);
@@ -36,20 +36,22 @@ class EventAdminPanel extends React.Component {
 
     render() {
         return (
-            <div className="col-12">
-                <br/>
-                <div className="card">
-                    <div className="card-title bg-primary text-center">
-                        <h3>Panel administratora</h3>
-                    </div>
-                    <div>
-                        <Link to={`/editEvent/${this.state.event.id}`} >
-                            <button type="button" className="btn btn-dark">Aktualizuj Dane </button>
-                        </Link>
-                        <button type="button" className="btn btn-danger" onClick = {this.deleteEvent} >Usuń Event </button>
-                    </div>
-                </div>
-            </div>
+            <Grid>
+                <Col xs={12}>
+                    <br/>
+                    <Panel bsStyle="primary">
+                        <Panel.Heading componentClass="h3" className="text-center">
+                            Panel administratora
+                        </Panel.Heading>
+                        <Panel.Body>
+                            <Link to={`/editEvent/${this.state.event.id}`} >
+                                <Button type="button" bsStyle="info">Aktualizuj Dane</Button>
+                            </Link>
+                            <Button type="button" bsStyle="danger" onClick = {this.deleteEvent}>Usuń Event</Button>
+                        </Panel.Body>
+                    </Panel>
+                </Col>
+            </Grid>
         );
     }
 

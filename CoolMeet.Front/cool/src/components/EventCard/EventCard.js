@@ -90,7 +90,7 @@ class EventCard extends React.Component {
 
     getTitle = () => {
         console.log("tutaj")
-        
+        console.log("ADMIN: ", this.props.event.administrator)
         if(this.props.event.administrator && this.props.event.administrator.id === this.AuthService.getUserInformation().id)
         {
             return(

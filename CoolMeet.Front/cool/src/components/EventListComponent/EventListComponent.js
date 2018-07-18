@@ -5,8 +5,10 @@ import { BASE_URL } from "../constants";
 import withAuth from '../withAuth';
 import AuthService from '../AuthService';
 import ceil from 'ceil';
+import { DatePicker } from 'antd';
 import {Panel, Col, Row, Button, FormGroup, ControlLabel, FormControl, Checkbox} from 'react-bootstrap';
 import { withRouter, Link } from 'react-router-dom'
+import moment from 'moment'
 class EventsListComponent extends React.Component {
     constructor(props) {
         super(props);
@@ -15,10 +17,12 @@ class EventsListComponent extends React.Component {
             eventsToShow: [],
             pages: [],
             currentPage: 1,
-            dateAfter: this.props.dateAfter,
-            dateBefore: this.props.dateBefore,
+            dateStartFilter: this.props.dateStartFilter,
+            dateEndFilter: this.props.dateEndFilter,
             filter: this.props.filter,
-            status: 0
+            pageSize: this.props.pageSize,
+            status: 0,
+            endOpen: false,
         };
         this.AuthService = new AuthService(BASE_URL);
         console.log("PROPS: ", this.props)
@@ -29,15 +33,17 @@ class EventsListComponent extends React.Component {
     {
         this.setState({
             events: nextProps.events,
-            dateAfter: nextProps.dateAfter,
-            dateBefore: nextProps.dateBefore,
-            filter: nextProps.filter
+            dateStartFilter: nextProps.dateStartInitialFilter,
+            dateEndFilter: nextProps.dateEndInitialFilter,
+            filter: nextProps.filter,
+            pageSize: nextProps.pageSize
         }, () => this.setPages());
     }
     
     render() {
         console.log("PROPS FROM RENDER:", this.props)
         console.log("STATE FROM REDNER:", this.state)
+        const { endOpen } = this.state;
         const eventsView = this.state.eventsToShow.map(e => {
             return <EventCard key={e.id} event={e}  />;
         });
@@ -46,7 +52,7 @@ class EventsListComponent extends React.Component {
             const cName = e === this.state.currentPage ? "danger" : "primary";
             return (
                 <li className="page-item" key={name}>
-                    <Button bsStyle={cName} value={e} disabled={e === this.state.currentPage} onClick={() => this.reachPage(e)}>{e}
+                    <Button bsStyle={cName} value={e} disabled={e === this.state.currentPage} onClick={() => this.changePage(e)}>{e}
                     </Button>
                 </li>
             )
@@ -64,15 +70,31 @@ class EventsListComponent extends React.Component {
                         <Col xs={3} md={3} lg={3}>
                             <FormGroup controlId="start">
                                 <ControlLabel>Od:</ControlLabel>
-                                <FormControl name="dateAfter" type="datetime-local" value={this.state.dateAfter}
-                                     placeholder="Czas startu" onChange={this.handleInputChange}/>
+                                <FormControl componentClass={DatePicker}
+                                             name="dateAfter" type="datetime-local"
+                                             value={this.state.dateStartFilter}
+                                             disabledDate={this.disabledStartDate}
+                                             showTime
+                                             format="DD-MM-YYYY HH:mm"
+                                             placeholder="Start"
+                                             onChange={this.onStartChange}
+                                             required
+                                             onOpenChange={this.handleStartOpenChange} />
                             </FormGroup>
                         </Col>
                         <Col xs={3} md={3} lg={3}>
                             <FormGroup controlId="end">
                                 <ControlLabel>Do:</ControlLabel>
-                                <FormControl name="dateBefore" type="datetime-local" value={this.state.dateBefore}
-                                     onChange={this.handleInputChange}/>
+                                <FormControl componentClass={DatePicker}
+                                             name="dateBefore" type="datetime-local"
+                                             value={this.state.dateEndFilter} placeholder="Koniec" 
+                                             disabledDate={this.disabledStartDate}
+                                             showTime
+                                             format="DD-MM-YYYY HH:mm"
+                                             onChange={this.onEndChange}
+                                             required
+                                             open={endOpen}
+                                             onOpenChange={this.handleEndOpenChange}/>
                             </FormGroup>
                         </Col>
                         <Col xs={3} md={3} lg={3}>
@@ -124,45 +146,72 @@ class EventsListComponent extends React.Component {
         }, () => this.setPages());
     }
     checkIfDatesCorrect(date) {
-        if (this.state.dateAfter > this.state.dateBefore) {
+        if (this.state.dateStartFilter > this.state.dateEndFilter) {
             if (date === "dateAfter") {
                 this.setState({
-                    dateBefore: this.state.dateAfter
+                    dateEndFilter: this.state.dateStartFilter
                 });
             }
             else {
                 this.setState({
-                    dateAfter: this.state.dateBefore
+                    dateStartFilter: this.state.dateEndFilter
                 });
             }
         }
     }
+
+    onStartChange = (value) => {
+        this.setState(
+            {
+                dateStartFilter: value != null ? value : ""
+            });
+    }
+
+    handleStartOpenChange = (open) => {
+        if (!open) {
+            this.setState({ endOpen: true });
+        }
+    }
+
+    handleEndOpenChange = (open) => {
+        this.setState({ endOpen: open });
+    }
+
+    onEndChange = (value) => {
+        this.setState(
+            {
+                dateEndFilter: value != null ? value : ""
+            });
+    }
+
     setPages() {
-        const onPage = 2;
         const pagesList = [];
         const evList = [];
         const all = this.state.filter;
-        const date1 = this.state.dateAfter;
-        const date2 = this.state.dateBefore;
+        const startDateFilter = moment.utc(this.state.dateStartFilter)
+        const endDateFilter = moment.utc(this.state.dateEndFilter);
         const status = this.state.status;
+
+        //console.log("START: ", startDateFilter, "END: ", endDateFilter)
+
         this.state.events.map(event => {
-            if ((event.status.id === status || status === 0) && (!all 
-                || (event.endDate >= date1 && event.endDate <= date2)
-                || (event.startDate >= date1 && event.startDate <= date2))) {
+            console.log("EVENTEND", moment(event.endDate))
+            const endIsInRange = moment(event.endDate).isBetween(startDateFilter, endDateFilter);
+            if ( (event.status.id === status || status === 0) && (!all || endIsInRange))
+            {
                 evList.push(event);
             }
         });
-        const listStart = onPage * (this.state.currentPage - 1);
-        for (var i = 1; i <= ceil(evList.length / onPage); i++) {
+        const listStart = this.state.pageSize * (this.state.currentPage - 1);
+        for (var i = 1; i <= ceil(evList.length / this.state.pageSize); i++) {
             pagesList.push(i);
         }
         this.setState({
             pages: pagesList,
-            //eventsToShow: this.state.events.slice(onPage, onPage + 2)
-            eventsToShow: evList.slice(listStart, listStart + onPage)
+            eventsToShow: evList.slice(listStart, listStart + this.state.pageSize)
         });
     }
-    reachPage(e) {
+    changePage(e) {
         this.setState({
             currentPage: e
         }, () => this.setPages());

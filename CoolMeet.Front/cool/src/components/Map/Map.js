@@ -66,7 +66,7 @@ class Map extends React.Component {
             return this.renderMap(this.state.lat, this.state.lng)
         }
         else {
-            return <div class="loader"></div>
+            return <div className="loader"></div>
         }
     }
 

@@ -7,6 +7,7 @@ import AuthService from '../AuthService';
 import '../EventInfo/EventInfo.css';
 import './EventInfo.css'
 import { withRouter } from 'react-router-dom';
+import {Grid, Panel, Col, Row, Button} from 'react-bootstrap';
 
 class EventInfo extends React.Component {
     constructor(props) {
@@ -15,6 +16,7 @@ class EventInfo extends React.Component {
             event: DEFAULT_EVENT,
             address: "Somewhere",
             textComment: "",
+            userAlreadyJoined: true
         };
         this.AuthService = new AuthService(BASE_URL);
     }
@@ -24,6 +26,7 @@ class EventInfo extends React.Component {
             .then(response => {
                 this.setState({
                     event: response.data,
+                    userAlreadyJoined: this.userAlreadyJoinedEvent(),
                 });
 
                 this.setState({
@@ -33,19 +36,31 @@ class EventInfo extends React.Component {
             .catch(error => console.log(error));
     }
 
+    userAlreadyJoinedEvent = () => {
+        const allIds = this.state.event.users.map(user => user.id);
+        return allIds.includes(this.AuthService.getUserInformation().id)
+    }
+
 
     render() {
         return (
-            <div className="col-12">
-                <br />
-                <div className="card">
-                    <div className="card-title bg-ownStyl text-center">
-                        <h3>Wydarzenie</h3>
-                    </div>
-                        <Event event={this.state.event} key={this.state.event.id} />
-                </div>
-         
-            </div>
+            <Grid>
+                <Col xs={12}>
+                    <br/>
+                    <Panel>
+                        <Panel.Heading className="bg-ownStyl text-center">
+                            <Row>
+                                <span className="text-center eventName">{this.state.event.name}</span>
+                                <Button type="button" disabled={this.state.userAlreadyJoined || this.state.statusUnavailable}
+                                        bsStyle="success" className="pull-right joinButton" onClick={this.joinEvent}>Dołącz</Button>
+                            </Row>
+                        </Panel.Heading >
+                        <Panel.Body>
+                            <Event event={this.state.event} key={this.state.event.id} />
+                        </Panel.Body>
+                    </Panel>
+                </Col>
+            </Grid>
         );
     }
 }

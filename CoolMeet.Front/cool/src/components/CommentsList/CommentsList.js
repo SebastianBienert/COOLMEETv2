@@ -3,7 +3,7 @@ import axios from 'axios';
 import {BASE_URL} from '../constants.js'
 import Comment from '../Comment/Comment';
 import AuthService from '../AuthService';
-
+import {Button, FormControl} from 'react-bootstrap';
 export default class CommentList extends Component {
     constructor(props) {
         super(props);
@@ -16,7 +16,7 @@ export default class CommentList extends Component {
 
     addComment = () => {
         // axios({ method: 'POST', url: `${BASE_URL}/comment`, data: { eventId: this.props.event.id, text: this.state.textComment }, headers: {'Authorization': `Bearer ${this.AuthService.getToken()}`}})
-       axios.post(BASE_URL + '/comment', { eventId: this.props.event.id, text: this.state.textComment }, this.AuthService.getConfigForAuthorize())
+       axios.post(BASE_URL + '/comment', { eventId: this.props.event.id, text: this.state.textComment })
             .then((res) => {
                 this.setState(prevState => {
                     return {
@@ -54,10 +54,10 @@ export default class CommentList extends Component {
             <div>
                  {this.renderComments()}
                  <div>
-                    <input name="textComment" type="text" id="textComment" onChange={this.handleInputChange} value={this.state.textComment}
+                    <FormControl name="textComment" type="text" id="textComment" onChange={this.handleInputChange} value={this.state.textComment}
                         className="form-control col-12" placeholder="Dodaj komentarz" />
-                    <button className="btn btn-warning btn-sm" onClick={this.addComment}
-                        disabled={!this.state.textComment}>Dodaj komentarz</button>
+                    <Button bsStyle="warning" bsSize="small" onClick={this.addComment}
+                        disabled={!this.state.textComment}>Dodaj komentarz</Button>
                 </div>
             </div>
         )

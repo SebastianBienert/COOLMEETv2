@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import BoardAddEvent from './components/BoardAddEvent'
 import Sidebar from './components/Sidebar/Sidebar'
 import LoginPage from './components/LoginPage/LoginPage'
 import EventInfo from './components/EventInfo/EventInfo';
@@ -14,6 +13,8 @@ import EditEvent from './components/EditEvent/EditEvent';
 import moment from 'moment';
 import 'moment/locale/pl';
 import AllEvents from './components/AllEvents/AllEvents';
+import AddEventForm from './components/AddEventForm/AddEventForm';
+
 class App extends Component {
 
   constructor(){
@@ -49,13 +50,12 @@ class App extends Component {
         <Router>
         <div className="container-fluid">
         <Sidebar history="/"/>
-          <div className="row">
             <div className="col-12">
               <Switch>
                 <Route exact path="/" component={LoginPage} />
                 <Route path="/LoggedUserEventList" component={LoggedUserEventList} />
                 <Route path="/events" component={AllEvents} /> 
-                <Route path="/newEvent" component={BoardAddEvent}/>
+                <Route path="/newEvent" component={AddEventForm}/>
                 <Route path="/login" component={LoginPage}/>
                 <Route path="/register" component={RegisterPage}/>
                 <Route path="/eventInfo/:id" component={EventInfo} />
@@ -63,7 +63,6 @@ class App extends Component {
                 <Route path="/editEvent/:id" component={EditEvent} />
               </Switch>
             </div>
-          </div>
         </div>
         </Router>
       );

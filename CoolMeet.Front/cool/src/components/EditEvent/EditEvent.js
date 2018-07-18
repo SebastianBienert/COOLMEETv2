@@ -8,12 +8,15 @@ import { DatePicker } from 'antd';
 import 'antd/dist/antd.css';  // or 'antd/dist/antd.less'
 import { withRouter, Link } from 'react-router-dom'
 import moment from 'moment';
+import {Form, FormControl, FormGroup, ControlLabel, Button, Panel, Row, Col} from 'react-bootstrap';
+
 class EditEvent extends React.Component {
     constructor(params) {
         super(params);
         this.state = {
             name: "",
             country: "",
+            address:"",
             city: "",
             description: "",
             start: "",
@@ -200,15 +203,15 @@ class EditEvent extends React.Component {
             id: this.state.id,
             name: this.state.name,
             description: this.state.description,
-            startDate: this.state.start,
-            endDate: this.state.end,
+            startDate: this.state.startValue,
+            endDate: this.state.endValue,
             country: this.state.country,
             city: this.state.city,
             address: this.state.address,
             statusId: this.state.status,
         };
         const url = BASE_URL + "/Event";
-
+        console.log("Editing ", request)
         axios.put(url, request, this.AuthService.getConfigForAuthorize())
             .then(result => {
                 this.props.history.replace(`/eventInfo/${this.state.id}`)
@@ -263,76 +266,90 @@ class EditEvent extends React.Component {
                 <form onSubmit={this.handleSubmit}>
                     <h4 className="text-center">Edytuj wydarzenie!</h4>
 
-                    <div className="form-group">
+                    <FormGroup controlId="name">
                         <input name="name" type="text" placeholder="Nazwa wydarzenia" id="name" value={this.state.name}
                             onChange={this.handleInputChange} className="form-control" required />
-                    </div>
+                    </FormGroup>
 
-                    <div className="flex-row">
-                        <div className="form-group center">
-                            <label htmlFor="start" className="offset-2 col-1">Start</label>
-                            <DatePicker
-                                disabledDate={this.disabledStartDate}
-                                showTime
-                                format="DD-MM-YYYY HH:mm"
-                                value={startValue}
-                                placeholder="Start"
-                                onChange={this.onStartChange}
-                                name="start"
-                                required
-                                onOpenChange={this.handleStartOpenChange}
-                            />
-                            <label htmlFor="end" className="offset-1 col-1">Koniec</label>
-                            <DatePicker
-                                disabledDate={this.disabledEndDate}
-                                showTime
-                                format="DD-MM-YYYY HH:mm"
-                                value={endValue}
-                                placeholder="Koniec"
-                                onChange={this.onEndChange}
-                                open={endOpen}
-                                onOpenChange={this.handleEndOpenChange}
-                            />
-                        </div>
-                    </div>
+                    <FormGroup>
+                        <Row className="flex-row">
+                             <Col sm={5} md={5} lg={5}
+                                    smOffset={1} mdOffset={1} lgOffset={1}
+                                    componentClass={FormGroup} controlId="start" className="center">
 
-                    <div className="form-group">
-                        <input name="address" type="text" id="address" placeholder="Ulica" value={this.state.address}
-                            onChange={this.handleInputChange} className="form-control" required />
-                    </div>
+                                    <Col componentClass={ControlLabel}
+                                        sm={2} md={2} lg={2}>Start</Col>
+                                    <Col xs={7}
+                                        componentClass={DatePicker}
+                                        disabledDate={this.disabledStartDate}
+                                        showTime
+                                        format="DD-MM-YYYY HH:mm"
+                                        value={startValue}
+                                        placeholder="Start"
+                                        onChange={this.onStartChange}
+                                        name="start"
+                                        required
+                                        onOpenChange={this.handleStartOpenChange}
+                                    />
+                            </Col>
+                            <Col sm={5} md={5} lg={5}
+                                    componentClass={FormGroup} controlId="end" className="center">
+                            <Col componentClass={ControlLabel}
+                                        sm={2} md={2} lg={2}>Koniec</Col>
 
+                                <Col xs={7}
+                                    componentClass={DatePicker}
+                                    disabledDate={this.disabledEndDate}
+                                    showTime
+                                    format="DD-MM-YYYY HH:mm"
+                                    value={endValue}
+                                    placeholder="Koniec"
+                                    onChange={this.onEndChange}
+                                    open={endOpen}
+                                    onOpenChange={this.handleEndOpenChange}
+                                />
+                            </Col>
 
-                    <div className="form-group">
-                        <input name="city" type="text" id="city" placeholder="Miasto" value={this.state.city}
-                            onChange={this.handleInputChange} className="form-control" required />
-                    </div>
+                        </Row>
+                    </FormGroup>
 
-                    <div className="form-group">
-                        <input name="country" type="text" id="country" placeholder="Kraj" value={this.state.country}
-                            onChange={this.handleInputChange} className="form-control" required />
-                    </div>
+                    <FormGroup controlId="address">
+                        <FormControl name="address" type="text" placeholder="Ulica" value={this.state.address}
+                            onChange={this.handleInputChange} required />
+                    </FormGroup>
 
-                    <div className="form-group">
-                        <input name="description" type="text" id="description" placeholder="Opis" value={this.state.description}
-                            onChange={this.handleInputChange} className="form-control" />
-                    </div>
+                    <FormGroup controlId="city">
+                        <FormControl name="city" type="text" placeholder="Miasto" value={this.state.city}
+                            onChange={this.handleInputChange} required />
+                    </FormGroup>
 
-                    <div className="form-group">
-                        <label htmlFor="status">Status</label>
-                        <select className="form-control" id="status" onChange={this.onSelectAlert}>
+                    <FormGroup controlId="country">
+                        <FormControl name="country" type="text" placeholder="Kraj" value={this.state.country}
+                            onChange={this.handleInputChange} required />
+                    </FormGroup>
+
+                    <FormGroup controlId="description">
+                        <FormControl name="description" type="text" placeholder="Opis" value={this.state.description}
+                            onChange={this.handleInputChange} />
+                    </FormGroup>
+
+                    <FormGroup controlId="status">
+                        <ControlLabel>Status</ControlLabel>
+                        <FormControl componentClass="select" onChange={this.onSelectAlert}>
                             {this.renderStatuses()}
-                        </select>
-                    </div>
+                        </FormControl>
+                    </FormGroup>
+
                     <div className="text-center mt-4">
-                        <button className="btn btn-outline-secondary" disabled={!this.state.formValid} type="submit">Edytuj!</button>
+                        <Button className="btn btn-outline-secondary" disabled={!this.state.formValid} type="submit">Edytuj!</Button>
                     </div>
                 </form>
                 <div>
                 {
                     !this.state.formValid && this.listOfErrorsNotEmpty() ?
-                        <div className="card">
+                        <Panel>
                             <FormErrors formErrors={this.state.formErrors} />
-                        </div>
+                        </Panel>
                         :
                         null
                 }

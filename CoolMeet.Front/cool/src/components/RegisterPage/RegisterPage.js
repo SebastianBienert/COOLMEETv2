@@ -2,6 +2,7 @@ import React from 'react';
 import axios from "axios";
 import { BASE_URL } from "../constants";
 import { FormErrors } from '../FormErrors/FormErrors.js'
+import {FormControl, FormGroup, Button, Grid} from 'react-bootstrap';
 class RegisterPage extends React.Component {
     constructor() {
         super();
@@ -123,31 +124,31 @@ class RegisterPage extends React.Component {
 
     render() {
         return (
-            <div className="container">
+            <Grid>
                 <form onSubmit={this.handleSubmit}>
                     <h1 className="h3 mb-3 font-weight-normal text-center">Zarejestruj się</h1>
-                    <div className="form-group">
-                        <input name="firstName" type="text" placeholder="Imie" id="firstName"
-                            onChange={this.handleInputChange} className="form-control" />
-                    </div>
-                    <div className="form-group">
-                        <input name="lastName" type="text" id="lastName" placeholder="Nazwisko"
-                            onChange={this.handleInputChange} className="form-control" />
-                    </div>
-                    <div className="form-group">
-                        <input name="userName" type="text" id="userName" placeholder="Nazwa uzytkownika"
-                            onChange={this.handleInputChange} className="form-control" />
-                    </div>
-                    <div className="form-group">
-                        <input name="email" type="text" id="email" placeholder="Email"
-                            onChange={this.handleInputChange} className="form-control" />
-                    </div>
-                    <div className="form-group">
-                        <input name="password" type="password" id="password" placeholder="Hasło"
-                            onChange={this.handleInputChange} className="form-control" />
-                    </div>
+                    <FormGroup controlId="firstName">
+                        <FormControl name="firstName" type="text" placeholder="Imie"
+                            onChange={this.handleInputChange}/>
+                    </FormGroup>
+                    <FormGroup controlId="lastName">
+                        <FormControl name="lastName" type="text" placeholder="Nazwisko"
+                            onChange={this.handleInputChange} />
+                    </FormGroup>
+                    <FormGroup controlId="userName">
+                        <FormControl name="userName" type="text" id="userName" placeholder="Nazwa uzytkownika"
+                            onChange={this.handleInputChange} />
+                    </FormGroup>
+                    <FormGroup controlId="email">
+                        <FormControl name="email" type="text" id="email" placeholder="Email"
+                            onChange={this.handleInputChange}/>
+                    </FormGroup>
+                    <FormGroup controlId="password">
+                        <FormControl name="password" type="password" placeholder="Hasło"
+                            onChange={this.handleInputChange}/>
+                    </FormGroup>
                     <div className="text-center mt-4">
-                        <button disabled={!this.state.formValid} className="btn btn-lg btn-primary" type="submit">Zarejestruj</button>
+                        <Button disabled={!this.state.formValid} bsStyle="primary" bsSize="large" type="submit">Zarejestruj</Button>
                     </div>
                 </form>
                 {
@@ -158,9 +159,8 @@ class RegisterPage extends React.Component {
                         :
                         null
                 }
-            </div>
+            </Grid>
         );
     }
 }
-
 export default RegisterPage;
