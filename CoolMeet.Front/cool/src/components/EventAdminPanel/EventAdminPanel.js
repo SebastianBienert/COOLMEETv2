@@ -2,21 +2,19 @@ import React from 'react';
 import axios from "axios";
 import {BASE_URL, DEFAULT_EVENT} from "../constants";
 import withAuth from '../withAuth';
-import AuthService from '../AuthService';
 import '../EventAdminPanel/EventAdminPanel.css';
 import { withRouter, Link } from 'react-router-dom'
-import {Grid, Panel, Col, Row, Button} from 'react-bootstrap';
+import {Grid, Panel, Col, Button} from 'react-bootstrap';
 class EventAdminPanel extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             event: DEFAULT_EVENT
         };
-        this.AuthService = new AuthService(BASE_URL);
     }
 
     componentWillMount() {
-        axios.get(BASE_URL + `/Event/eventInfo/${this.props.match.params.id}`, this.AuthService.getConfigForAuthorize())
+        axios.get(BASE_URL + `/Event/eventInfo/${this.props.match.params.id}`)
         .then(response => {
             this.setState({
                 event: response.data
@@ -27,7 +25,7 @@ class EventAdminPanel extends React.Component {
     }
 
     deleteEvent = () => {
-        axios.delete(BASE_URL + `/Event/${this.props.match.params.id}`, this.AuthService.getConfigForAuthorize())
+        axios.delete(BASE_URL + `/Event/${this.props.match.params.id}`)
         .then(response => {
             this.props.history.replace(`/LoggedUserEventList`);
         })

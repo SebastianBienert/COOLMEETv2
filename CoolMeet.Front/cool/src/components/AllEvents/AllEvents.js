@@ -1,25 +1,21 @@
 import React from 'react';
-import EventCard from "../EventCard/EventCard";
 import axios from "axios";
 import { BASE_URL } from "../constants";
 import withAuth from '../withAuth';
-import AuthService from '../AuthService';
-import ceil from 'ceil';
-import {Panel, Col, Row, Button, FormGroup, ControlLabel, FormControl, Checkbox} from 'react-bootstrap';
+import { withRouter} from 'react-router-dom'
 import EventListComponent from '../EventListComponent/EventListComponent';
-import moment from 'moment';
+
 class AllEvents extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             events: [],
         };
-        this.AuthService = new AuthService(BASE_URL);
         this.fetchEventList()
     }
 
     fetchEventList = () => {
-        axios.get(BASE_URL + "/Event", this.AuthService.getConfigForAuthorize())
+        axios.get(BASE_URL + "/Event")
             .then(response => {
                 this.setState({
                     events: response.data,
@@ -39,4 +35,4 @@ class AllEvents extends React.Component {
     }
     
 }
-export default withAuth(AllEvents);
+export default withAuth(withRouter(AllEvents));

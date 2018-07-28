@@ -5,9 +5,12 @@ import EventInfo from './components/EventInfo/EventInfo';
 import axios from "axios"
 import RegisterPage from './components/RegisterPage/RegisterPage'
 import './App.css';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import { history } from './helpers/history';
+import { alertActions } from './actions/alertActions';
+import { connect } from 'react-redux';
+import { Router, Route, Switch} from 'react-router-dom';
 import LoggedUserEventList from './components/LoggedUserEventList/LoggedUserEventList';
-import AuthService from './components/AuthService';
+import {authService} from './services/AuthService';
 import EventAdminPanel from './components/EventAdminPanel/EventAdminPanel';
 import EditEvent from './components/EditEvent/EditEvent';
 import moment from 'moment';
@@ -17,9 +20,13 @@ import AddEventForm from './components/AddEventForm/AddEventForm';
 
 class App extends Component {
 
-  constructor(){
-    super();
-    const authService = new AuthService();
+  constructor(props){
+    super(props);
+    const { dispatch } = this.props;
+    history.listen((location, action) => {
+        // clear alert on location change
+        dispatch(alertActions.clear());
+    });
     axios.interceptors.request.use(
       config => {
         config.headers.Authorization = `bearer ${authService.getToken()}`
@@ -36,7 +43,7 @@ class App extends Component {
       console.log("error", error);
       if(error.response.status === 401){
         authService.logout();
-        this.props.history.replace('/login')
+        history.replace('/login')
       }
       return Promise.reject(error);
     });
@@ -45,11 +52,13 @@ class App extends Component {
 
   }
 
+  
+
   render() {
       return (
-        <Router>
+        <Router history={history}>
         <div className="container-fluid">
-        <Sidebar history="/"/>
+        <Sidebar/>
             <div className="col-12">
               <Switch>
                 <Route exact path="/" component={LoginPage} />
@@ -69,4 +78,12 @@ class App extends Component {
      }
 }
 
-export default App;
+function mapStateToProps(state) {
+  const { loggedIn, user } = state.authentication;
+  return {
+      loggedIn,
+      user
+  };
+}
+
+export default connect(mapStateToProps)(App);

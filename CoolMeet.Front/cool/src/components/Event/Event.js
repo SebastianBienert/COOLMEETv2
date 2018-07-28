@@ -2,21 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import {BASE_URL, DEFAULT_EVENT} from "../constants";
-import AuthService from '../AuthService';
 import Map from '../Map/Map';
 import CommentsList from '../CommentsList/CommentsList'
-import {Panel, Button} from 'react-bootstrap';
 
 class Event extends React.Component {
     constructor(props)
     {
         super(props);
-        this.AuthService = new AuthService(BASE_URL);
         this.state = {
 
             users: props.event.users || [],
-            //added
-            userAlreadyJoined: this.userAlreadyJoinedEvent(),
             statusUnavailable: props.event.status.description === "Niedostępny",
         }
     }
@@ -28,7 +23,7 @@ class Event extends React.Component {
     }
     
     joinEvent = () => {
-        axios({ method: 'POST', url: `${BASE_URL}/Event/join/${this.props.event.id}`, headers: {'Authorization': `Bearer ${this.AuthService.getToken()}`}})
+        axios({ method: 'POST', url: `${BASE_URL}/Event/join/${this.props.event.id}`})
 
         .then(response =>{
             console.info(`Join ${this.props.event.name}`);
@@ -37,15 +32,7 @@ class Event extends React.Component {
                     users: [...prevState.users, response.data],
                 }
             })
-            this.setState({
-                userAlreadyJoined: true
-            })
         })
-    }
-
-    userAlreadyJoinedEvent = () => {
-        const allIds = this.props.event.users.map(user => user.id);
-        return allIds.includes(this.AuthService.getUserInformation().id)
     }
 
     handleInputChange = (event) => {

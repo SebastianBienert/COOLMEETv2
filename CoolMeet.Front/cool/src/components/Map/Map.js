@@ -1,6 +1,4 @@
 import React from 'react';
-import {BASE_URL} from "../constants";
-import AuthService from '../AuthService';
 import {withScriptjs,withGoogleMap,GoogleMap,Marker,InfoWindow} from "react-google-maps";
 import { compose, withProps } from "recompose";
 import Geocode from '../../geocode'
@@ -9,8 +7,7 @@ import PropTypes from "prop-types";
 
 class Map extends React.Component {
     constructor(props) {
-        super(props);
-        this.AuthService = new AuthService(BASE_URL);        
+        super(props);    
         this.state = {
         }
         console.log(props)

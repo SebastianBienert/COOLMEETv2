@@ -1,8 +1,9 @@
 import React from 'react';
-import { BASE_URL } from "../constants";
-import AuthService from '../AuthService';
 import './LoginPage.css'
+import {connect} from 'react-redux';
+import {userActions} from '../../actions/userActions'
 import { FormErrors } from '../FormErrors/FormErrors.js'
+
 class LoginPage extends React.Component {
   constructor() {
     super();
@@ -14,7 +15,6 @@ class LoginPage extends React.Component {
       passwordValid: false,
       formValid: false
     }
-    this.AuthService = new AuthService(BASE_URL, this.context);
   }
 
   handleInputChange = (event) => {
@@ -63,20 +63,15 @@ class LoginPage extends React.Component {
   }
 
   componentWillMount() {
-    if (this.AuthService.loggedIn()) {
+    if (this.props.loggedIn) {
       this.props.history.replace('/');
     }
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.AuthService.login(this.state.email, this.state.password)
-      .then(res => {
-        this.props.history.push('/events');
-      })
-      .catch(err => {
-        alert(err);
-      })
+    const { dispatch } = this.props;
+    dispatch(userActions.login(this.state.email, this.state.password))
   }
 
   render() {
@@ -103,4 +98,12 @@ class LoginPage extends React.Component {
   }
 }
 
-export default LoginPage;
+function mapStateToProps(state) {
+  const { loggingIn, loggedIn } = state.authentication;
+  return {
+      loggingIn,
+      loggedIn
+  };
+}
+
+export default connect(mapStateToProps)(LoginPage);

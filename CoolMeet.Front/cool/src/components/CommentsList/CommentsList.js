@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import {BASE_URL} from '../constants.js'
 import Comment from '../Comment/Comment';
-import AuthService from '../AuthService';
 import {Button, FormControl} from 'react-bootstrap';
 export default class CommentList extends Component {
     constructor(props) {
         super(props);
-        this.AuthService = new AuthService();
         this.state ={
             comments: props.event.comments || [],
             textComment: ""

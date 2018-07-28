@@ -1,13 +1,9 @@
 import React from 'react';
-import EventCard from "../EventCard/EventCard";
 import axios from "axios";
 import { BASE_URL } from "../constants";
 import withAuth from '../withAuth';
-import AuthService from '../AuthService';
-import ceil from 'ceil';
 import EventListComponent from '../EventListComponent/EventListComponent';
 import { withRouter} from 'react-router-dom'
-import moment from 'moment';
 
 class LoggedUserEventList extends React.Component {
     constructor(props) {
@@ -16,12 +12,11 @@ class LoggedUserEventList extends React.Component {
         this.state = {
             events: [],
         };
-        this.AuthService = new AuthService(BASE_URL);
         this.fetchLoggedUserEventList()
     }
 
     fetchLoggedUserEventList = () => {
-        axios.get(BASE_URL + `/Event/GetLoggedUserEvents`, this.AuthService.getConfigForAuthorize())
+        axios.get(BASE_URL + `/Event/GetLoggedUserEvents`)
             .then(response => {
                 this.setState({
                     events: response.data,

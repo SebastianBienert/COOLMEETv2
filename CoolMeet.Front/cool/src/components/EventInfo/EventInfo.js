@@ -3,7 +3,6 @@ import Event from "../Event/Event";
 import axios from "axios";
 import { BASE_URL, DEFAULT_EVENT } from "../constants";
 import withAuth from '../withAuth';
-import AuthService from '../AuthService';
 import '../EventInfo/EventInfo.css';
 import './EventInfo.css'
 import { withRouter } from 'react-router-dom';
@@ -18,11 +17,10 @@ class EventInfo extends React.Component {
             textComment: "",
             userAlreadyJoined: true
         };
-        this.AuthService = new AuthService(BASE_URL);
     }
 
     componentDidMount() {
-        axios.get(BASE_URL + `/Event/eventInfo/${this.props.match.params.id}`, this.AuthService.getConfigForAuthorize())
+        axios.get(BASE_URL + `/Event/eventInfo/${this.props.match.params.id}`)
             .then(response => {
                 this.setState({
                     event: response.data,
@@ -38,7 +36,7 @@ class EventInfo extends React.Component {
 
     userAlreadyJoinedEvent = () => {
         const allIds = this.state.event.users.map(user => user.id);
-        return allIds.includes(this.AuthService.getUserInformation().id)
+        return allIds.includes(this.props.user.id)
     }
 
 

@@ -3,13 +3,11 @@ import axios from "axios";
 import { BASE_URL } from "../constants";
 import withAuth from '../withAuth';
 import {withRouter} from 'react-router-dom';
-import AuthService from '../AuthService';
 import { FormErrors } from '../FormErrors/FormErrors.js';
 import { DatePicker } from 'antd';
 import './AddEventForm.css'
-import {Form, FormControl, FormGroup, ControlLabel, Button, Panel, Row, Col} from 'react-bootstrap';
+import {FormControl, FormGroup, ControlLabel, Button, Panel, Row, Col} from 'react-bootstrap';
 import 'antd/dist/antd.css';  // or 'antd/dist/antd.less'
-import moment from 'moment';
 class AddEventForm extends React.Component {
     constructor() {
         super();
@@ -29,7 +27,6 @@ class AddEventForm extends React.Component {
             endValue: null,
             endOpen: false,
         };
-        this.AuthService = new AuthService(BASE_URL);
     }
 
     renderStatuses = () => {
@@ -223,7 +220,7 @@ class AddEventForm extends React.Component {
     }
 
     getStatus() {
-        axios.get(BASE_URL + "/Event/status", this.AuthService.getConfigForAuthorize())
+        axios.get(BASE_URL + "/Event/status")
             .then(response => {
                 this.setState({
                     statuses: response.data

@@ -1,42 +1,35 @@
 import React, { Component } from 'react';
-import AuthService from './AuthService';
-import {BASE_URL} from 'constants';
+import {authService} from '../services/AuthService';
+import {connect} from 'react-redux';
+
 export default function withAuth(AuthComponent) {
-    const service = new AuthService(BASE_URL);
-    return class AuthWrapped extends Component{
-        constructor(props)
-        {
-            super(props);
-            this.state ={
-                user: null
-            }
-        }
+
+    class AuthWrapped extends Component{
         componentWillMount() {
-            if (!service.loggedIn()) {
-               this.props.history.replace('/login')
-            }
-            else {
-                try {
-                    const profile = service.getProfile()
-                    this.setState({
-                        user: profile
-                    })
-                }
-                catch(err){
-                    service.logout();
-                    this.props.history.replace('/login');
-                }
+            if (!this.props.loggedIn) {
+               this.props.history.replace('/login');
+               authService.logout();
             }
         }
         render(){
-            if (this.state.user) {
+            if (this.props.loggedIn) {
                 return (
-                    <AuthComponent {...this.props} history={this.props.history} user={this.state.user} />
+                    <AuthComponent {...this.props} />
                 )
             }
             else {
-                return null
+                return (<h1>AUNAUTHORIZED</h1>)
             }
         }
     }
+
+    function mapStateToProps(state) {
+        const {loggedIn, user} = state.authentication;
+        return{
+            user,
+            loggedIn
+        }
+    }
+
+    return connect(mapStateToProps)(AuthWrapped)
 }

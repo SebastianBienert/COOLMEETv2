@@ -2,13 +2,12 @@ import React from 'react';
 import axios from "axios";
 import { BASE_URL } from "../constants";
 import withAuth from '../withAuth';
-import AuthService from '../AuthService';
 import { FormErrors } from '../FormErrors/FormErrors.js';
 import { DatePicker } from 'antd';
 import 'antd/dist/antd.css';  // or 'antd/dist/antd.less'
-import { withRouter, Link } from 'react-router-dom'
+import { withRouter} from 'react-router-dom'
 import moment from 'moment';
-import {Form, FormControl, FormGroup, ControlLabel, Button, Panel, Row, Col} from 'react-bootstrap';
+import {FormControl, FormGroup, ControlLabel, Button, Panel, Row, Col} from 'react-bootstrap';
 
 class EditEvent extends React.Component {
     constructor(params) {
@@ -29,7 +28,6 @@ class EditEvent extends React.Component {
             endValue: null,
             endOpen: false,
         };
-        this.AuthService = new AuthService(BASE_URL);
     }
 
     renderStatuses = () => {
@@ -212,7 +210,7 @@ class EditEvent extends React.Component {
         };
         const url = BASE_URL + "/Event";
         console.log("Editing ", request)
-        axios.put(url, request, this.AuthService.getConfigForAuthorize())
+        axios.put(url, request)
             .then(result => {
                 this.props.history.replace(`/eventInfo/${this.state.id}`)
             })
@@ -222,7 +220,7 @@ class EditEvent extends React.Component {
     }
 
     getStatus() {
-        axios.get(BASE_URL + "/Event/status", this.AuthService.getConfigForAuthorize())
+        axios.get(BASE_URL + "/Event/status")
             .then(response => {
                 this.setState({
                     statuses: response.data
@@ -233,7 +231,7 @@ class EditEvent extends React.Component {
 
     componentDidMount() {
         this.getStatus();
-        axios.get(BASE_URL + `/Event/eventInfo/${this.props.match.params.id}`, this.AuthService.getConfigForAuthorize())
+        axios.get(BASE_URL + `/Event/eventInfo/${this.props.match.params.id}`)
         .then(response => {
             this.setState({
                 id: response.data.id,

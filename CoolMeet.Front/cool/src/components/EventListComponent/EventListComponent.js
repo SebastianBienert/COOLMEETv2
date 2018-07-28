@@ -1,13 +1,10 @@
 import React from 'react';
 import EventCard from "../EventCard/EventCard";
-import axios from "axios";
-import { BASE_URL } from "../constants";
 import withAuth from '../withAuth';
-import AuthService from '../AuthService';
 import ceil from 'ceil';
 import { DatePicker } from 'antd';
 import {Panel, Col, Row, Button, FormGroup, ControlLabel, FormControl, Checkbox} from 'react-bootstrap';
-import { withRouter, Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import moment from 'moment'
 class EventsListComponent extends React.Component {
     constructor(props) {
@@ -24,7 +21,6 @@ class EventsListComponent extends React.Component {
             status: 0,
             endOpen: false,
         };
-        this.AuthService = new AuthService(BASE_URL);
         console.log("PROPS: ", this.props)
         console.log("STATE:", this.state)
     }
@@ -192,10 +188,7 @@ class EventsListComponent extends React.Component {
         const endDateFilter = moment.utc(this.state.dateEndFilter);
         const status = this.state.status;
 
-        //console.log("START: ", startDateFilter, "END: ", endDateFilter)
-
         this.state.events.map(event => {
-            console.log("EVENTEND", moment(event.endDate))
             const endIsInRange = moment(event.endDate).isBetween(startDateFilter, endDateFilter);
             if ( (event.status.id === status || status === 0) && (!all || endIsInRange))
             {

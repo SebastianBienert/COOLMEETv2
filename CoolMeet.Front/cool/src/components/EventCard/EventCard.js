@@ -2,17 +2,15 @@ import React from "react";
 import axios from "axios";
 import {Link} from 'react-router-dom';
 import {BASE_URL} from "../constants";
-import AuthService from '../AuthService';
 import './EventCard.css';
-import {Panel, Col, Row, Button} from 'react-bootstrap';
+import withAuth from '../withAuth'
+import {Panel, Button} from 'react-bootstrap';
 
 class EventCard extends React.Component {
 
     constructor(props)
     {
         super(props);
-        this.AuthService = new AuthService(BASE_URL);
-        
         this.state = {
             users: props.event.users || [],
             userAlreadyJoined: this.userAlreadyJoinedEvent(),
@@ -37,7 +35,7 @@ class EventCard extends React.Component {
 
     userAlreadyJoinedEvent = () => {
         const allIds = this.props.event.users.map(user => user.id);
-        return allIds.includes(this.AuthService.getUserInformation().id)
+        return allIds.includes(this.props.user.id)
     }
 
     leaveUserFromEvent = () =>{
@@ -55,9 +53,7 @@ class EventCard extends React.Component {
     }
 
     joinToEvent = () => {
-        console.info(`Join to  ${this.AuthService.getToken()}`);
-        axios({ method: 'POST', url: `${BASE_URL}/Event/join/${this.props.event.id}`, headers: {'Authorization': `Bearer ${this.AuthService.getToken()}`}})
-
+        axios({ method: 'POST', url: `${BASE_URL}/Event/join/${this.props.event.id}`})
         .then(response =>{
             console.info(`Join to ${this.props.event.name}`);
             this.setState( prevState =>{
@@ -69,7 +65,6 @@ class EventCard extends React.Component {
                 userAlreadyJoined: true
             })
         })
-        console.log(this.AuthService.getProfile());
     }
 
 
@@ -83,7 +78,7 @@ class EventCard extends React.Component {
             )
         }
         else if(this.state.statusUnavailable) {
-            <Button type="button" disabled bsStyle="success" className="btnStyle" onClick={this.joinToEvent}>Dołącz</Button>
+            return (<Button type="button" disabled bsStyle="success" className="btnStyle" onClick={this.joinToEvent}>Dołącz</Button>)
         }
         return <Button type="button" disabled={this.state.userAlreadyJoined || this.state.statusUnavailable} bsStyle="success" className="btnStyle" onClick={this.joinToEvent}>Dołącz</Button>
     }
@@ -91,7 +86,7 @@ class EventCard extends React.Component {
     getTitle = () => {
         console.log("tutaj")
         console.log("ADMIN: ", this.props.event.administrator)
-        if(this.props.event.administrator && this.props.event.administrator.id === this.AuthService.getUserInformation().id)
+        if(this.props.event.administrator && this.props.event.administrator.id === this.props.user.id)
         {
             return(
                 <Link to={`/eventAdministrationPanel/${this.props.event.id}`} >  
@@ -122,7 +117,7 @@ class EventCard extends React.Component {
                 </p>
 
                 <p className="summary pull-right"> 
-                    {this.AuthService.loggedIn() && 
+                    {this.props.loggedIn && 
                     <Link to={`/eventInfo/${this.props.event.id}`} >  
                         <Button type="button" bsStyle="info">
                             Info
@@ -138,4 +133,4 @@ class EventCard extends React.Component {
     }
 }
 
-export default EventCard;
+export default withAuth(EventCard);
