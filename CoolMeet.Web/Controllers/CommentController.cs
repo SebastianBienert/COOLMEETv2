@@ -37,6 +37,31 @@ namespace CoolMeet.Web.Controllers
 
             return BadRequest();
         }
+
+        [HttpDelete]
+        [Route("{commentId}")]
+        public async Task<IActionResult> DeleteComment(int commentId)
+        {
+            var userId = GetCurrentUserAsync().Result.Id;
+            if (await _commentService.DeleteComment(userId, commentId))
+                return NoContent();
+            else
+                return BadRequest();
+
+        }
+
+        [HttpPatch]
+        [Route("{commentId}")]
+        public async Task<IActionResult> EditComment([FromRoute]int commentId, [FromBody]EditCommentDTO editCommentDto)
+        {
+            var userId = (await GetCurrentUserAsync()).Id;
+            var result = await _commentService.EditComment(userId, commentId, editCommentDto);
+            if (result == null)
+                return BadRequest();
+
+            return Ok(result);
+        }
+
         private Task<User> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
     }
 }

@@ -25,6 +25,7 @@ namespace CoolMeet.Web.Config
                    .ForMember(s => s.Status, c => c.MapFrom(m => m.Status));
                 cfg.CreateMap<EventDTO, Event>();
                 cfg.CreateMap<CommentDTO, Comment>().ReverseMap();
+                cfg.CreateMap<EditCommentDTO, Comment>().ReverseMap();
                 cfg.CreateMap<AddCommentDTO, Comment>();
                 cfg.CreateMap<AddEventDTO, Event>();
                 cfg.CreateMap<EventUser, JoinEventDTO>().ReverseMap();

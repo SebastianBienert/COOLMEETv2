@@ -5,7 +5,6 @@ import withAuth from '../withAuth';
 import {withRouter} from 'react-router-dom';
 import { FormErrors } from '../FormErrors/FormErrors.js';
 import { DatePicker } from 'antd';
-import './AddEventForm.css'
 import {FormControl, FormGroup, ControlLabel, Button, Panel, Row, Col} from 'react-bootstrap';
 import 'antd/dist/antd.css';  // or 'antd/dist/antd.less'
 class AddEventForm extends React.Component {

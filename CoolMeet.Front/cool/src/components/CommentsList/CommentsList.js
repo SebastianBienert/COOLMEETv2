@@ -3,7 +3,8 @@ import axios from 'axios';
 import {BASE_URL} from '../constants.js'
 import Comment from '../Comment/Comment';
 import {Button, FormControl} from 'react-bootstrap';
-export default class CommentList extends Component {
+import {connect} from 'react-redux';
+class CommentList extends Component {
     constructor(props) {
         super(props);
         this.state ={
@@ -33,6 +34,34 @@ export default class CommentList extends Component {
             });
     }
 
+    deleteComment = (id) => {
+        axios.delete(BASE_URL + `/Comment/${id}`)
+        .then(response =>{
+            this.setState(prevState => {
+                return {
+                    comments : prevState.comments.filter(c => c.id !== id),
+                    textComment : prevState.textComment
+                }
+            });
+        });
+    }
+
+    editComment = (id, text) => {
+        axios.patch(BASE_URL + `/Comment/${id}`,{
+            Text : text
+        })
+        .then(response =>{
+            this.setState(prevState => {
+                let editingComment = prevState.comments.find(c => c.id === id);
+                editingComment.text = text;
+                return {
+                    comments : prevState.comments,
+                    textComment : prevState.textComment
+                }
+            });
+        });
+    }
+
     handleInputChange = (event) => {
         this.setState({
             [event.target.name]: event.target.value
@@ -43,7 +72,16 @@ export default class CommentList extends Component {
         
         if (this.props.event)
             if (this.props.event.comments) {
-                return this.state.comments.map((comment) => <Comment key={comment.id} commentId={comment.id} name={comment.text} user={`${comment.user.firstName || 'anonim'} ${comment.user.lastName || ''}`} date={comment.created}/>)
+                console.log("Comments:", this.props.event.comments)
+                return this.state.comments.map((comment) => <Comment 
+                editable={comment.user.id === this.props.user.id}
+                id={comment.id}
+                key={comment.id}
+                delete={this.deleteComment}
+                edit={this.editComment}
+                commentId={comment.id} 
+                name={comment.text} user={`${comment.user.firstName || 'anonim'} ${comment.user.lastName || ''}`}
+                date={comment.created}/>)
             }
     };
 
@@ -61,3 +99,12 @@ export default class CommentList extends Component {
         )
     }
 }
+
+function mapStateToProps(state) {
+    const { user } = state.authentication;
+    return {
+        user
+    };
+  }
+
+export default connect(mapStateToProps)(CommentList);

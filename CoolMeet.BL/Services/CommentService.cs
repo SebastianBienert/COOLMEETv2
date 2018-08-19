@@ -26,5 +26,24 @@ namespace CoolMeet.BL.Services
             return commentResult;
 
         }
+
+        public async Task<bool> DeleteComment(string userId, int commentId)
+        {
+            var comment = _mapper.Map<CommentDTO>(await _commentRepository.GetComment(commentId));
+            if (comment.User.Id !=  userId)
+                return false;
+
+            return await _commentRepository.DeleteComment(commentId);
+        }
+
+        public async Task<CommentDTO> EditComment(string userId, int commentId, EditCommentDTO editCommentDto)
+        {
+            var comment = _mapper.Map<CommentDTO>(await _commentRepository.GetComment(commentId));
+            if (comment.User.Id != userId)
+                return null;
+
+            var editedComment = _mapper.Map<CommentDTO>(await _commentRepository.UpdateComment(commentId, editCommentDto));
+            return editedComment;
+        }
     }
 }
