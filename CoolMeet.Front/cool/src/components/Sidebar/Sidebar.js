@@ -47,6 +47,13 @@ class Sidebar extends React.Component {
                                 </NavItem>
                             </LinkContainer>
                             }
+                            {loggedIn && 
+                            <LinkContainer to="/userSettings">
+                                <NavItem eventKey={7}>
+                                        <i className="fa fa-cog fa-lg"></i> Ustawienia
+                                </NavItem>
+                            </LinkContainer>
+                            }
 
                             {!loggedIn &&  
                             <LinkContainer to="/login">

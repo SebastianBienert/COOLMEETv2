@@ -17,6 +17,7 @@ import moment from 'moment';
 import 'moment/locale/pl';
 import AllEvents from './components/AllEvents/AllEvents';
 import AddEventForm from './components/AddEventForm/AddEventForm';
+import UserSettingsPage from './components/UserSettingsPage/UserSettingsPage';
 
 class App extends Component {
 
@@ -70,6 +71,7 @@ class App extends Component {
                 <Route path="/eventInfo/:id" component={EventInfo} />
                 <Route path="/eventAdministrationPanel/:id" component={EventAdminPanel} />
                 <Route path="/editEvent/:id" component={EditEvent} />
+                <Route path="/userSettings" component={UserSettingsPage} />
               </Switch>
             </div>
         </div>

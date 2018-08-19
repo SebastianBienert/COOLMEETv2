@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import 'moment/locale/pl';
-import {Panel, Button, FormControl, Row, Grid} from 'react-bootstrap'
+import {Panel, Button, FormControl} from 'react-bootstrap'
 import './Comment.css';
 class Comment extends Component{
     constructor(props){

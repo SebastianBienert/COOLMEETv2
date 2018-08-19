@@ -34,16 +34,6 @@ class AddEventForm extends React.Component {
         );
     }
 
-    listOfErrorsNotEmpty = () => {
-        for (var key in this.state.formErrors) {
-            if (this.state.formErrors.hasOwnProperty(key)) {
-                if(this.state.formErrors[key].length > 0)
-                    return true;
-            }
-        }
-        return false;
-    }
-
     handleInputChange = (event) => {
         event.persist()
         this.setState({
@@ -329,7 +319,7 @@ class AddEventForm extends React.Component {
                 </form>
                 <div>
                 {
-                    !this.state.formValid && this.listOfErrorsNotEmpty() ?
+                    !this.state.formValid ?
                         <Panel>
                             <FormErrors formErrors={this.state.formErrors} />
                         </Panel>

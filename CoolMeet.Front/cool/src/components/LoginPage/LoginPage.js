@@ -24,10 +24,6 @@ class LoginPage extends React.Component {
     }, () => this.validateField(event.target.name, event.target.value));
   }
 
-  listOfErrorsNotEmpty = () => {
-    return this.state.formErrors.email.length > 0 || this.state.formErrors.password.length > 0;
-  }
-
   validateField = (fieldName, value) => {
     let fieldValidationErrors = this.state.formErrors;
     let emailValid = this.state.emailValid;
@@ -86,7 +82,7 @@ class LoginPage extends React.Component {
           <button className="btn btn-lg btn-primary btn-block" disabled={!this.state.formValid} type="submit">Zaloguj się</button>
         </form>
         {
-          !this.state.formValid && this.listOfErrorsNotEmpty() ?
+          !this.state.formValid ?
             <div className="card">
               <FormErrors formErrors={this.state.formErrors} />
             </div>
