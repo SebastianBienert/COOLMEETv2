@@ -8,7 +8,7 @@ import registerServiceWorker from './registerServiceWorker';
 import 'popper.js/dist/umd/popper.js';
 import 'jquery/dist/jquery';
 import 'font-awesome/css/font-awesome.min.css';
-
+import 'toastr/build/toastr.min.css';
 
 ReactDOM.render(
     <Provider store={store}>

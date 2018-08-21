@@ -6,6 +6,8 @@ import withAuth from '../withAuth';
 import { withRouter} from 'react-router-dom'
 import { Layout, Menu, Icon } from 'antd';
 import ChangePasswordSubPage from './ChangePasswordSubPage';
+import ChangeUserDataSubPage from './ChangeUserDataSubPage';
+
 const { Header, Content, Footer, Sider } = Layout;
 
 export const subPages = {
@@ -28,6 +30,9 @@ class UserSettingsPage extends React.Component {
             case subPages.CHANGE_PASSWORD:{
                 return <ChangePasswordSubPage/>
             }
+            case subPages.CHANGE_DATA:{
+                return <ChangeUserDataSubPage {...this.props.user}/>
+            }
             default:{
                 return 'XD';
             }
@@ -48,7 +53,7 @@ class UserSettingsPage extends React.Component {
                     style={{ background: '#fff' }}
                     trigger={null}>
                         <div className="logo" />
-                        <UserSettingsMenu changePage={this.changeCurrentSubPage}/>
+                        <UserSettingsMenu changePage={this.changeCurrentSubPage} {...this.props.user}/>
                 </Sider>
                 <Layout>
                     <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280 }}>
@@ -61,12 +66,11 @@ class UserSettingsPage extends React.Component {
     
 }
 
-
-
 function mapStateToProps(state) {
     const { user } = state.authentication;
     return {
         user
     };
   }
+
 export default connect(mapStateToProps)(withAuth(withRouter(UserSettingsPage)));

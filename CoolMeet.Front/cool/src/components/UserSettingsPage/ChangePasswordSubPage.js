@@ -4,8 +4,12 @@ import UserSettingsMenu from './UserSettingsMenu'
 import {connect} from 'react-redux';
 import withAuth from '../withAuth';
 import { withRouter} from 'react-router-dom'
-import {FormControl, FormGroup, Button, Grid} from 'react-bootstrap';
+import {FormControl, FormGroup,Form, Button, Grid, ControlLabel, Col, Row} from 'react-bootstrap';
 import { FormErrors } from '../FormErrors/FormErrors.js'
+import { BASE_URL } from '../constants';
+import {userActions} from '../../actions/userActions';
+import toastr from 'toastr';
+
 class ChangePasswordSubPage extends React.Component {
     constructor(props) {
         super(props);
@@ -76,35 +80,74 @@ class ChangePasswordSubPage extends React.Component {
         });
     }
 
+    handleSubmit = (event) =>{
+        event.preventDefault();
+        const request = {
+            newPassword : this.state.newPassword,
+            newPasswordConfirmation : this.state.newPasswordConfirmation,
+            oldPassword : this.state.oldPassword
+        }
+        axios.patch(BASE_URL + '/Account/password', request)
+        .then(response =>{
+            console.log(response)
+            toastr.success("Hasło zostało zmienione");
+            this.props.logout();
+        })
+        .catch(errors =>{
+            toastr.error("Wprowadzono złe hasło");
+            console.log(errors)
+        })
+    }
+
     render() {
         return (
-            <Grid>
-            <form onSubmit={this.handleSubmit}>
-                <FormGroup controlId="newPassword">
-                    <FormControl name="newPassword" type="password" placeholder="Nowe hasło"
-                        onChange={this.handleInputChange}/>
-                </FormGroup>
-                <FormGroup controlId="newPasswordConfirmation">
-                    <FormControl name="newPasswordConfirmation" type="password" placeholder="Potwierdz nowe hasło"
-                        onChange={this.handleInputChange} />
-                </FormGroup>
-                <FormGroup controlId="oldPassword">
-                    <FormControl name="oldPassword" type="password" id="oldPassword" placeholder="Stare hasło"
-                        onChange={this.handleInputChange} />
-                </FormGroup>
-                <div className="text-center mt-4">
+            <div>
+            <Form horizontal onSubmit={this.handleSubmit}>
+                <Row componentClass={FormGroup}  controlId="newPassword">
+                    <Col componentClass={ControlLabel} xs={2}>
+                        Nowe hasło
+                    </Col>
+                    <Col xs={7}>
+                        <FormControl name="newPassword" type="password" placeholder="Nowe hasło" value={this.state.newPassword}
+                            onChange={this.handleInputChange}/>
+                    </Col>
+                </Row>
+                <Row componentClass={FormGroup} controlId="newPasswordConfirmation">
+                    <Col componentClass={ControlLabel} xs={2}>
+                        Potwierdź hasło
+                    </Col>
+                    <Col xs={7}>
+                        <FormControl name="newPasswordConfirmation" type="password" placeholder="Potwierdz nowe hasło" value={this.state.newPasswordConfirmation}
+                            onChange={this.handleInputChange} />
+                    </Col>
+                </Row>
+                <Row componentClass={FormGroup}  controlId="oldPassword">
+                    <Col componentClass={ControlLabel} xs={2}>
+                        Stare hasło
+                    </Col>
+                    <Col xs={7}>
+                        <FormControl name="oldPassword" type="password" id="oldPassword" placeholder="Stare hasło" value = {this.state.oldPassword}
+                            onChange={this.handleInputChange} />
+                    </Col>
+                </Row>
+                <Row xs={9} className="text-center mt-4">
                     <Button disabled={!this.state.formValid} bsStyle="primary" bsSize="large" type="submit">Zmień hasło</Button>
-                </div>
-            </form>
+                </Row>
+            </Form>
             {
                 !this.state.formValid &&
                     <div className="card">
                         <FormErrors formErrors={this.state.formErrors} />
                     </div>
             }
-        </Grid>
+        </div>
         )
     }
     
 }
-export default ChangePasswordSubPage;
+function mapDispatchToProps(dispatch){
+    return {
+        logout: () => dispatch(userActions.logout())
+    };
+}
+export default connect(null, mapDispatchToProps)(ChangePasswordSubPage);
