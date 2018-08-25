@@ -103,7 +103,6 @@ class RegisterPage extends React.Component {
         }
         axios.post(url, request)
             .then(response => {
-                console.log(response);
                 this.props.history.replace(`/login`);
             })
             .catch(response => {

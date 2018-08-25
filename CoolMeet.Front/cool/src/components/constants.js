@@ -15,3 +15,8 @@ export const DEFAULT_EVENT = {
     },
     users: [],
 }
+
+export const EVENT_STATUS = {
+    Available : "Dostępny",
+    Unavailable : "Niedostępny"
+}

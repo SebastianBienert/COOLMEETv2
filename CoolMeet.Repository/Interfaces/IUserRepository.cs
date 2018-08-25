@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using CoolMeet.Models.Dtos;
 using CoolMeet.Models.Models;
 using Microsoft.AspNetCore.Identity;
 
@@ -17,6 +18,6 @@ namespace CoolMeet.Repository.Interfaces
 
         Task<bool> DeleteUser(string id);
 
-        Task<bool> UpdateUser(User user);
+        Task<User> UpdateUser(UpdateUserDTO user);
     }
 }

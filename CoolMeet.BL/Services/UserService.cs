@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ namespace CoolMeet.BL.Services
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == loginUserDto.Email);
 
-            var token = ConfirmUserPersonality(user, loginUserDto) ? GetJwtSecurityToken(user) : null;
+            var token = ConfirmUserPersonality(user, loginUserDto.Password) ? GetJwtSecurityToken(user) : null;
             if (user == null || token == null)
             {
                 return null;
@@ -50,14 +51,22 @@ namespace CoolMeet.BL.Services
             };
         }
 
-        private bool ConfirmUserPersonality(User user, LoginUserDto loginUserDto)
+        public async Task<UserDto> UpdateUser(UpdateUserDTO updateUserDto)
+        {
+            if (updateUserDto == null)
+                return null;
+            var updatedUserEntity = await _repositoryUser.UpdateUser(updateUserDto);
+            return _mapper.Map<User, UserDto>(updatedUserEntity);
+        }
+
+        public bool ConfirmUserPersonality(User user, string password)
         {
             if (user == null)
             {
                 return false;
             }
             var resultOfveryfyingPassword =
-                _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginUserDto.Password);
+                _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
             return resultOfveryfyingPassword == PasswordVerificationResult.Success;
         }
 
@@ -88,6 +97,20 @@ namespace CoolMeet.BL.Services
             var users = await _repositoryUser.GetAllUsers();
             var result = _mapper.Map<IEnumerable<UserDto>>(users);
             return result;
+        }
+
+        public async Task<FileStream> GetUserPhoto(string id)
+        {
+            var user = await _repositoryUser.GetUser(id);
+            try
+            {
+                var image = File.OpenRead(user.PhotoPath);
+                return image;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
         public async Task<UserDto> GetUser(string id)

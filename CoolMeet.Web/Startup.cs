@@ -7,11 +7,18 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using CoolMeet.Models.Models;
 using CoolMeet.Web.Config;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
+using System.IO;
+using AutoMapper;
+
+//using Microsoft.Extensions.PlatformAbstractions;  // For ApiControllerAttribute Compatibility Setting
 
 
 namespace CoolMeet.Web
@@ -37,13 +44,16 @@ namespace CoolMeet.Web
         {
             services.AddDbContext<Context>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Connection")));
-
+            
             IdentityConfiguration.AddIdentity(services);
             services.AddCors();
             services.AddMvc();
 
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<UrlResolver>();
             IdentityConfiguration.ConfigureIdentity(services);
-            services.AddSingleton(sp => MappingProfile.Initialize());
+           
             services.AddSingleton(_ => Configuration as IConfigurationRoot);
             services.AddScoped<PasswordHasher<User>>();
             services.AddScoped<IUserRepository, UserRepository>();
@@ -60,6 +70,8 @@ namespace CoolMeet.Web
             {
                 c.SwaggerDoc("v1", new Info { Title = "CoolMeet API", Version = "v1" });
             });
+            services.AddAutoMapper();
+
             JwtConfiguration.AddJwtAuthorization(Configuration, services);
         }
 

@@ -10,7 +10,6 @@ class Map extends React.Component {
         super(props);    
         this.state = {
         }
-        console.log(props)
     }
 
     componentWillReceiveProps(newProps) {

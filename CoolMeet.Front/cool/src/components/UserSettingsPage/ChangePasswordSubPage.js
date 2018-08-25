@@ -89,7 +89,6 @@ class ChangePasswordSubPage extends React.Component {
         }
         axios.patch(BASE_URL + '/Account/password', request)
         .then(response =>{
-            console.log(response)
             toastr.success("Hasło zostało zmienione");
             this.props.logout();
         })

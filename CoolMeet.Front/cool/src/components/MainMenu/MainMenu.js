@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import {userActions} from '../../actions/userActions';
 import Greetings from './Greetings';
 import {NavItem, Navbar, Nav} from 'react-bootstrap';
-import './Sidebar.css';
+import './MainMenu.css';
 
-class Sidebar extends React.Component {
+class MainMenu extends React.Component {
 
     logout = (event) =>
     {
@@ -80,7 +80,7 @@ class Sidebar extends React.Component {
                             }
                             {loggedIn && 
                             <NavItem eventKey={0}>
-                                <Greetings key={this.props.loggedIn} user={this.props.user} />
+                                <Greetings/>
                             </NavItem>
                             }
                 </Nav>
@@ -97,4 +97,4 @@ class Sidebar extends React.Component {
     };
   }
 
-  export default connect(mapStateToProps)(Sidebar)
+  export default connect(mapStateToProps)(MainMenu)

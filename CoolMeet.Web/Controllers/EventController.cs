@@ -11,7 +11,7 @@ namespace CoolMeet.Web.Controllers
     [Produces("application/json")]
     [Route("api/Event")]
     [Authorize]
-    public class EventController : Controller
+    public class EventController : BaseController
     {
         private readonly IEventService _eventService;
 
@@ -53,7 +53,7 @@ namespace CoolMeet.Web.Controllers
             return NotFound();
         }
 
-        [HttpGet("eventInfo/{id}", Name = "GetEventById")]
+        [HttpGet("{id}", Name = "GetEventById")]
         public async Task<IActionResult> GetEvent(int id)
         {
             var eventDto = await _eventService.GetEvent(id);

@@ -7,6 +7,7 @@ import { withRouter} from 'react-router-dom'
 import { Layout, Menu, Icon } from 'antd';
 import ChangePasswordSubPage from './ChangePasswordSubPage';
 import ChangeUserDataSubPage from './ChangeUserDataSubPage';
+import ChangeUserPhotoSubPage from './ChangeUserPhotoSubPage';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -33,6 +34,9 @@ class UserSettingsPage extends React.Component {
             case subPages.CHANGE_DATA:{
                 return <ChangeUserDataSubPage {...this.props.user}/>
             }
+            case subPages.CHANGE_PHOTO:{
+                return <ChangeUserPhotoSubPage />
+            }
             default:{
                 return 'XD';
             }
@@ -40,7 +44,6 @@ class UserSettingsPage extends React.Component {
     }
 
     changeCurrentSubPage = (event) => {
-        console.log("CHANGESUBEPAGE", event);
         this.setState({
             subPage : event.item.props.value
         });

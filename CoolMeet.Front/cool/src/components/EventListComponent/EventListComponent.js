@@ -21,8 +21,6 @@ class EventsListComponent extends React.Component {
             status: 0,
             endOpen: false,
         };
-        console.log("PROPS: ", this.props)
-        console.log("STATE:", this.state)
     }
 
     componentWillReceiveProps(nextProps)
@@ -37,8 +35,6 @@ class EventsListComponent extends React.Component {
     }
     
     render() {
-        console.log("PROPS FROM RENDER:", this.props)
-        console.log("STATE FROM REDNER:", this.state)
         const { endOpen } = this.state;
         const eventsView = this.state.eventsToShow.map(e => {
             return <EventCard key={e.id} event={e}  />;

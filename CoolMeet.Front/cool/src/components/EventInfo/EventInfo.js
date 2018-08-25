@@ -1,12 +1,15 @@
 import React from 'react';
-import Event from "../Event/Event";
+import EventDescription from "./EventDescription";
 import axios from "axios";
-import { BASE_URL, DEFAULT_EVENT } from "../constants";
+import { BASE_URL, DEFAULT_EVENT, EVENT_STATUS } from "../constants";
 import withAuth from '../withAuth';
 import '../EventInfo/EventInfo.css';
 import './EventInfo.css'
 import { withRouter } from 'react-router-dom';
 import {Grid, Panel, Col, Row, Button} from 'react-bootstrap';
+import Map from '../Map/Map';
+import CommentsList from '../CommentsList/CommentsList'
+import UserList from './UserList';
 
 class EventInfo extends React.Component {
     constructor(props) {
@@ -15,20 +18,22 @@ class EventInfo extends React.Component {
             event: DEFAULT_EVENT,
             address: "Somewhere",
             textComment: "",
-            userAlreadyJoined: true
+            userAlreadyJoined: false,
+            statusUnavailable : true,
+            dataLoading : true
         };
     }
 
     componentDidMount() {
-        axios.get(BASE_URL + `/Event/eventInfo/${this.props.match.params.id}`)
+        axios.get(BASE_URL + `/Event/${this.props.match.params.id}`)
             .then(response => {
+                const event = response.data;
                 this.setState({
-                    event: response.data,
+                    event: event,
                     userAlreadyJoined: this.userAlreadyJoinedEvent(),
-                });
-
-                this.setState({
-                    address: `${this.state.event.country} ${this.state.event.city} ${this.state.event.address}`
+                    address: `${event.country} ${event.city} ${event.address}`,
+                    statusUnavailable : event.status.description == EVENT_STATUS.Unavailable,
+                    dataLoading : false
                 });
             })
             .catch(error => console.log(error));
@@ -40,24 +45,35 @@ class EventInfo extends React.Component {
     }
 
 
+
     render() {
+        const event = this.state.event;
+        const address = `${event.country} ${event.city} ${event.address}`;
         return (
-            <Grid>
-                <Col xs={12}>
-                    <br/>
+            <Grid fluid>
+                <Row xs={12}>
                     <Panel>
-                        <Panel.Heading className="bg-ownStyl text-center">
+                        <Panel.Heading className="text-center">
                             <Row>
-                                <span className="text-center eventName">{this.state.event.name}</span>
+                                <span className="text-center eventName">{event.name}</span>
                                 <Button type="button" disabled={this.state.userAlreadyJoined || this.state.statusUnavailable}
                                         bsStyle="success" className="pull-right joinButton" onClick={this.joinEvent}>Dołącz</Button>
                             </Row>
-                        </Panel.Heading >
+                        </Panel.Heading>
                         <Panel.Body>
-                            <Event event={this.state.event} key={this.state.event.id} />
+                            <Row>
+                                <Col xs={3}><EventDescription event={this.state.event} key={event.id} /></Col>
+                                <Col xs={7}>
+                                    <Map address={address} name={event.name} />
+                                </Col>
+                                <Col xs={2}><UserList users={event.users}></UserList></Col>
+                            </Row>
                         </Panel.Body>
                     </Panel>
-                </Col>
+                </Row>
+                <Row>
+                    <CommentsList eventId={event.id} comments={event.comments} />
+                </Row>
             </Grid>
         );
     }

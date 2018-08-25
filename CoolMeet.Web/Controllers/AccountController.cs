@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CoolMeet.BL.Interfaces;
+using CoolMeet.Models.Dtos;
 using CoolMeet.Models.Dtos.Security;
 using CoolMeet.Models.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -15,23 +16,24 @@ namespace CoolMeet.Web.Controllers
     [Produces("application/json")]
     [Route("api/Account")]
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly UserManager<User> _userManager;
 
-        public AccountController(UserManager<User> userManager)
+        private readonly IUserService _userService;
+
+        public AccountController(UserManager<User> userManager, IUserService userService)
         {
             _userManager = userManager;
+            _userService = userService;
         }
 
         [HttpPatch("password")]
         public async Task<IActionResult> ChangePasswordAsync([FromBody]ChangePasswordDTO changePasswordDto)
         {
-            User user = await GetCurrentUserAsync();
-            var verification =
-                _userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash,
-                    changePasswordDto.OldPassword);
-            if (verification == PasswordVerificationResult.Failed)
+            var user = await GetCurrentUserAsync();
+            var verification = _userService.ConfirmUserPersonality(user, changePasswordDto.OldPassword);
+            if (!verification)
             {
                 return BadRequest("Wrong password");
             }
@@ -47,6 +49,16 @@ namespace CoolMeet.Web.Controllers
             return Ok(result.Errors);
         }
 
+        [HttpPatch]
+        public async Task<IActionResult> UpdateUserData([FromBody] UpdateUserDTO updateUserDto)
+        {
+            var user = await GetCurrentUserAsync();
+            if (user.Id != updateUserDto.UserId)
+                return Unauthorized();
+
+            var updatedUser = _userService.UpdateUser(updateUserDto);
+            return Ok(updatedUser);
+        }
         private Task<User> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
     }
 }

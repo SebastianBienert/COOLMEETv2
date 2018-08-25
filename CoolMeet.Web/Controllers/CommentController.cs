@@ -11,7 +11,7 @@ namespace CoolMeet.Web.Controllers
     [Produces("application/json")]
     [Route("api/Comment")]
     [Authorize]
-    public class CommentController : Controller
+    public class CommentController : BaseController
     {
         private readonly ICommentService _commentService;
 

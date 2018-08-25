@@ -6,24 +6,48 @@ import withAuth from '../withAuth';
 import { withRouter} from 'react-router-dom'
 import {FormControl, FormGroup,Form, Button, Grid, ControlLabel, Col, Row} from 'react-bootstrap';
 import { FormErrors } from '../FormErrors/FormErrors.js'
+import { BASE_URL } from '../constants';
+import toastr from 'toastr';
+import {userActions} from '../../actions/userActions';
+
 class ChangeUserDataSubPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            userId : props.id,
             firstName : props.firstName,
             lastName : props.lastName,
             email : props.email,
             formErrors: { firstName: '', lastName: '', email: ''},
-            valuesValid: { firstName: false, lastName: false, email: false},
+            valuesValid: { firstName: true, lastName: true, email: true},
             formValid: true,
         }
     }
 
     handleInputChange = (event) => {
-        event.persist()
+        event.persist();
         this.setState({
             [event.target.name]: event.target.value
         }, () => this.validateField(event.target.name, event.target.value));
+    }
+
+    handleSubmit = (event) => {
+        event.preventDefault();
+        const request = {
+            userId : this.state.userId,
+            firstName : this.state.firstName,
+            lastName : this.state.lastName,
+            email : this.state.email
+        };
+        axios.patch(BASE_URL + '/Account', request)
+        .then(response =>{
+            this.props.updateUserData(request);
+            toastr.success("Dane zostały zmienione");
+        })
+        .catch(errors =>{
+            toastr.error("Coś poszło nie tak :(");
+            console.log(errors)
+        })
     }
 
     validateField = (fieldName, value) => {
@@ -122,4 +146,10 @@ class ChangeUserDataSubPage extends React.Component {
     }
     
 }
-export default ChangeUserDataSubPage;
+
+function mapDispatchToProps(dispatch){
+    return {
+        updateUserData: (data) => dispatch(userActions.updateData(data))
+    };
+}
+export default connect(null, mapDispatchToProps)(ChangeUserDataSubPage);

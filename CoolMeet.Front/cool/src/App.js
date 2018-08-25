@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Sidebar from './components/Sidebar/Sidebar'
+import MainMenu from './components/MainMenu/MainMenu'
 import LoginPage from './components/LoginPage/LoginPage'
 import EventInfo from './components/EventInfo/EventInfo';
 import axios from "axios"
@@ -18,7 +18,7 @@ import 'moment/locale/pl';
 import AllEvents from './components/AllEvents/AllEvents';
 import AddEventForm from './components/AddEventForm/AddEventForm';
 import UserSettingsPage from './components/UserSettingsPage/UserSettingsPage';
-
+import "react-placeholder/lib/reactPlaceholder.css";
 class App extends Component {
 
   constructor(props){
@@ -37,11 +37,9 @@ class App extends Component {
     );
 
     axios.interceptors.response.use(function (response) {
-      console.log(response);
       return response;
     }, function (error) {
       // Do something with response error
-      console.log("error", error);
       if(error.response.status === 401){
         authService.logout();
         history.replace('/login')
@@ -59,7 +57,7 @@ class App extends Component {
       return (
         <Router history={history}>
         <div className="container-fluid">
-        <Sidebar/>
+        <MainMenu/>
             <div className="col-12">
               <Switch>
                 <Route exact path="/" component={LoginPage} />

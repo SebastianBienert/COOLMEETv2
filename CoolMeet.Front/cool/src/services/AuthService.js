@@ -22,7 +22,6 @@ function login(email, password){
     }
     return axios.post(`${BASE_URL}/user/login`, request)
     .then(response => {
-        console.log(response);
         localStorage.setItem('token', response.data.token);
         return response.data.userInformation;
     })

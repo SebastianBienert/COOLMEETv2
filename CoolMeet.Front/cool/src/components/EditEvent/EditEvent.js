@@ -31,7 +31,6 @@ class EditEvent extends React.Component {
     }
 
     renderStatuses = () => {
-        console.log("Statuses: " + this.state.statuses);
         return (
             this.state.statuses.map((st) =>{
                     if(st.id === this.state.status)
@@ -132,7 +131,6 @@ class EditEvent extends React.Component {
     }
 
     onSelectAlert = (event) => {
-        console.log(event.target.value);
         this.setState({
             status: event.target.value
         });
@@ -200,7 +198,6 @@ class EditEvent extends React.Component {
             statusId: this.state.status,
         };
         const url = BASE_URL + "/Event";
-        console.log("Editing ", request)
         axios.put(url, request)
             .then(result => {
                 this.props.history.replace(`/eventInfo/${this.state.id}`)
@@ -241,7 +238,6 @@ class EditEvent extends React.Component {
                 startValue: moment(response.data.startDate),
                 endValue: moment(response.data.endDate)
             });
-            console.log("Data: ", this.response.data)
         })
         .catch(error => console.log(error));
 

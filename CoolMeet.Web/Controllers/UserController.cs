@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CoolMeet.BL.Interfaces;
 using CoolMeet.Models.Dtos;
 using CoolMeet.Models.Dtos.Security;
@@ -9,7 +10,7 @@ namespace CoolMeet.Web.Controllers
 {
     [Produces("application/json")]
     [Route("api/User")]
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private readonly IUserService _serviceUser;
         public UserController(IUserService serviceUser)
@@ -29,7 +30,7 @@ namespace CoolMeet.Web.Controllers
         }
 
         [HttpGet("{id}", Name = "GetUserById")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetUser(string id)
         {
             var user = await _serviceUser.GetUser(id);
@@ -41,17 +42,16 @@ namespace CoolMeet.Web.Controllers
             return NotFound();
         }
 
-        [HttpGet("{email}", Name = "GetUserByEmail")]
-        [Authorize]
-        public async Task<IActionResult> GetUserByEmail(string email)
+        [HttpGet("{id}/photo", Name = "GetUserPhotoById")]
+        public async Task<IActionResult> GetUserPhoto(string id)
         {
-            var user = await _serviceUser.GetUserByEmail(email);
-            if (user != null)
+            var image = await _serviceUser.GetUserPhoto(id);
+            if (image == null)
             {
-                return Ok(user);
+                return NotFound();
             }
-
-            return NotFound();
+            return File(image, "image/jpeg");
+            
         }
 
         [HttpDelete("{id}")]

@@ -8,20 +8,28 @@ class CommentList extends Component {
     constructor(props) {
         super(props);
         this.state ={
-            comments: props.event.comments || [],
+            comments: props.comments || [],
             textComment: ""
+        }
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps.comments != this.state.comments) {
+            this.setState({
+                comments : nextProps.comments
+            })
         }
     }
 
     addComment = () => {
         // axios({ method: 'POST', url: `${BASE_URL}/comment`, data: { eventId: this.props.event.id, text: this.state.textComment }, headers: {'Authorization': `Bearer ${this.AuthService.getToken()}`}})
-       axios.post(BASE_URL + '/comment', { eventId: this.props.event.id, text: this.state.textComment })
+       axios.post(BASE_URL + '/comment', { eventId: this.props.eventId, text: this.state.textComment })
             .then((res) => {
                 this.setState(prevState => {
                     return {
                         comments: [...prevState.comments,
                              { 
-                                 eventId: this.props.event.id, 
+                                 eventId: this.props.eventId, 
                                  created: res.data.created,  
                                  user: res.data.user, 
                                  userId: res.data.userId,
@@ -69,20 +77,18 @@ class CommentList extends Component {
     }
 
     renderComments = () => {
-        
-        if (this.props.event)
-            if (this.props.event.comments) {
-                console.log("Comments:", this.props.event.comments)
-                return this.state.comments.map((comment) => <Comment 
-                editable={comment.user.id === this.props.user.id}
-                id={comment.id}
-                key={comment.id}
-                delete={this.deleteComment}
-                edit={this.editComment}
-                commentId={comment.id} 
-                name={comment.text} user={`${comment.user.firstName || 'anonim'} ${comment.user.lastName || ''}`}
-                date={comment.created}/>)
-            }
+        if (this.props.comments) {
+            console.log("Comments:", this.props.comments)
+            return this.state.comments.map((comment) => <Comment 
+            editable={comment.user.id === this.props.user.id}
+            id={comment.id}
+            key={comment.id}
+            delete={this.deleteComment}
+            edit={this.editComment}
+            commentId={comment.id} 
+            name={comment.text} user={`${comment.user.firstName || 'anonim'} ${comment.user.lastName || ''}`}
+            date={comment.created}/>)
+        }
     };
 
     render() {

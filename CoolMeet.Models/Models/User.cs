@@ -12,6 +12,8 @@ namespace CoolMeet.Models.Models
 
         public string LastName { get; set; }
 
+        public string PhotoPath { get; set; }
+
         public virtual ICollection<EventUser> Events { get; set; }
     }
 }

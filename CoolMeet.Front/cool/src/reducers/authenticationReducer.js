@@ -1,8 +1,7 @@
 import { userConstants } from '../constants/userConstants';
- 
-let user = JSON.parse(localStorage.getItem('user'));
-const initialState = user ? { loggedIn: true, user } : {loggedIn: false};
- 
+import {store} from '../helpers/store'
+const initialState = {loggedIn: false};
+
 export function authentication(state = initialState, action) {
   switch (action.type) {
     case userConstants.LOGIN_REQUEST:
@@ -21,6 +20,13 @@ export function authentication(state = initialState, action) {
       return {
         loggedIn: false,
       };
+    case userConstants.UPDATE_DATA:{
+      const user = Object.assign(state.user, action.newData)
+      return {
+        loggedIn : state.loggedIn,
+        user : Object.assign({}, user)
+      }
+    }
     default:
       return state
   }

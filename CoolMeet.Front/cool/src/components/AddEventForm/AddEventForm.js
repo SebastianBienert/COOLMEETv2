@@ -123,7 +123,6 @@ class AddEventForm extends React.Component {
     }
 
     onSelectAlert = (event) => {
-        console.log(event.target.value);
         this.setState({
             status: event.target.value
         });
@@ -190,7 +189,6 @@ class AddEventForm extends React.Component {
             statusId: this.state.status
         };
         const url = BASE_URL + "/Event";
-        console.log("SEnding", req);
         axios.post(url, req)
             .then(result => {
                 //alert("DODANO" + JSON.stringify(result));

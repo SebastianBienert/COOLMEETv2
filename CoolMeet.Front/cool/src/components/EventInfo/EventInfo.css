@@ -11,3 +11,25 @@
 .joinButton{
     margin-right: 20px !important;
 }
+
+.userName{
+    text-transform : capitalize;
+    padding-left : 10px;
+    font-size: medium;
+}
+
+.roundedImg{
+    max-width : 50px;
+    max-height : 50px;
+    border-radius: 50%;
+}
+.list-group-item{
+    padding-left : 10px;
+}
+
+#usersHeading{
+    font-size: 18px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.85);
+    padding-bottom: 5px;
+}

@@ -4,9 +4,17 @@ import { alertActions } from './alertActions';
 import { history } from '../helpers/history';
 export const userActions = {
     login,
-    logout
+    logout,
+    updateData
 };
- 
+
+function updateData(newData){
+    return{
+        type : userConstants.UPDATE_DATA,
+        newData
+    }
+}
+
 function login(email, password) {
     return dispatch => {
         authService.login(email, password)
