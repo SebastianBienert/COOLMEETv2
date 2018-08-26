@@ -15,6 +15,8 @@ using System.IO;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace CoolMeet.BL.Services
 {
@@ -25,14 +27,17 @@ namespace CoolMeet.BL.Services
         private readonly UserManager<User> _userManager;
         private readonly PasswordHasher<User> _passwordHasher;
         private readonly IConfigurationRoot _configuration;
+        private readonly IHostingEnvironment _environment;
 
-        public UserService(IUserRepository repository, IMapper mapper, UserManager<User> userManager, PasswordHasher<User> passwordHasher, IConfigurationRoot configuration)
+        public UserService(IUserRepository repository, IMapper mapper, UserManager<User> userManager,
+            PasswordHasher<User> passwordHasher, IConfigurationRoot configuration, IHostingEnvironment hostingEnvironment )
         {
             _repositoryUser = repository;
             _mapper = mapper;
             _userManager = userManager;
             _passwordHasher = passwordHasher;
             _configuration = configuration;
+            _environment = hostingEnvironment;
         }
 
         public async Task<TokenDto> Login(LoginUserDto loginUserDto)
@@ -57,6 +62,17 @@ namespace CoolMeet.BL.Services
                 return null;
             var updatedUserEntity = await _repositoryUser.UpdateUser(updateUserDto);
             return _mapper.Map<User, UserDto>(updatedUserEntity);
+        }
+
+        public async Task<UserDto> UpdateUserPhoto(IFormFile file, string userId)
+        {
+            var path = Path.Combine(_environment.ContentRootPath, "Photos");
+            using (var fileStream = new FileStream(Path.Combine(path, userId), FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+                var dto = await _repositoryUser.SetUserPhotoPath(userId, Path.Combine("./Photos", userId));
+                return _mapper.Map<User, UserDto>(dto);
+            }
         }
 
         public bool ConfirmUserPersonality(User user, string password)

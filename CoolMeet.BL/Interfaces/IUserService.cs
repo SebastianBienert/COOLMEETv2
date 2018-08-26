@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CoolMeet.Models.Dtos;
 using CoolMeet.Models.Dtos.Security;
 using CoolMeet.Models.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 namespace CoolMeet.BL.Interfaces
@@ -23,6 +24,8 @@ namespace CoolMeet.BL.Interfaces
         Task<TokenDto> Login(LoginUserDto loginUserDto);
 
         Task<UserDto> UpdateUser(UpdateUserDTO updateUserDto);
+
+        Task<UserDto> UpdateUserPhoto(IFormFile file, string userId);
 
         Task<bool> DeleteUser(string id);
 

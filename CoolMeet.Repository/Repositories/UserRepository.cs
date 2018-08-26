@@ -31,6 +31,19 @@ namespace CoolMeet.Repository.Repositories
             return await _contextUser.Users.SingleOrDefaultAsync(u => u.Email == email);
         }
 
+        public async Task<User> SetUserPhotoPath(string userId, string path)
+        {
+            var entityToUpdate = await _contextUser.Users.SingleOrDefaultAsync(u => u.Id == userId);
+            if (entityToUpdate != null)
+            {
+                entityToUpdate.PhotoPath = path;
+                await _contextUser.SaveChangesAsync();
+                return entityToUpdate;
+            }
+
+            return null;
+        }
+
         public async Task<bool> DeleteUser(string id)
         {
             var entityToRemove = await _contextUser.Users.SingleOrDefaultAsync(u => u.Id == id);

@@ -19,4 +19,6 @@ export const userConstants = {
     
     UPDATE_DATA : 'UPDATE_DATA',
 
+    UPDATE_PHOTO : 'UPDATE_PHOTO'
+
 };

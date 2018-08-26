@@ -5,7 +5,8 @@ import { history } from '../helpers/history';
 export const userActions = {
     login,
     logout,
-    updateData
+    updateData,
+    reloadImage
 };
 
 function updateData(newData){
@@ -13,6 +14,10 @@ function updateData(newData){
         type : userConstants.UPDATE_DATA,
         newData
     }
+}
+
+function reloadImage(){
+    return {type : userConstants.UPDATE_PHOTO}
 }
 
 function login(email, password) {

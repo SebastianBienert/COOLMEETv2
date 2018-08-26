@@ -2,7 +2,7 @@ import React from 'react';
 import axios from "axios";
 import { BASE_URL } from "../constants";
 import { FormErrors } from '../FormErrors/FormErrors.js'
-import {FormControl, FormGroup, Button, Grid} from 'react-bootstrap';
+import {FormControl, FormGroup, Form, Button, Grid} from 'react-bootstrap';
 class RegisterPage extends React.Component {
     constructor() {
         super();
@@ -84,7 +84,6 @@ class RegisterPage extends React.Component {
     }
 
     validateForm = () => {
-        //console.log(this.state.valuesValid);
         this.setState({
             formValid: this.state.valuesValid.email && this.state.valuesValid.password
                 && this.state.valuesValid.firstName && this.state.valuesValid.lastName && this.state.valuesValid.userName
@@ -93,7 +92,7 @@ class RegisterPage extends React.Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        const url = BASE_URL + '/user';
+        const url = BASE_URL + '/Account';
         const request = {
             firstName: this.state.firstName,
             lastName: this.state.lastName,
@@ -114,7 +113,7 @@ class RegisterPage extends React.Component {
     render() {
         return (
             <Grid>
-                <form onSubmit={this.handleSubmit}>
+                <Form onSubmit={this.handleSubmit}>
                     <h1 className="h3 mb-3 font-weight-normal text-center">Zarejestruj się</h1>
                     <FormGroup controlId="firstName">
                         <FormControl name="firstName" type="text" placeholder="Imie"
@@ -139,7 +138,7 @@ class RegisterPage extends React.Component {
                     <div className="text-center mt-4">
                         <Button disabled={!this.state.formValid} bsStyle="primary" bsSize="large" type="submit">Zarejestruj</Button>
                     </div>
-                </form>
+                </Form>
                 {
                     !this.state.formValid ?
                         <div className="card">

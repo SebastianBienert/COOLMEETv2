@@ -65,32 +65,7 @@ namespace CoolMeet.Web.Controllers
             return NotFound();
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Token([FromBody] LoginUserDto loginUserDto)
-        {
-            var tokenResponse = await _serviceUser.Login(loginUserDto);
 
-            if (tokenResponse?.Token == null)
-                return BadRequest();
-
-            return Ok(tokenResponse);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddUser([FromBody] RegistrationDTO registerUserDto)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var result = await _serviceUser.RegisterUser(registerUserDto);
-
-            if (result.Succeeded)
-                return NoContent();
-
-            return BadRequest();
-        }
 
     }
 }

@@ -20,7 +20,7 @@ function login(email, password){
         email: email,
         password: password
     }
-    return axios.post(`${BASE_URL}/user/login`, request)
+    return axios.post(`${BASE_URL}/Account/login`, request)
     .then(response => {
         localStorage.setItem('token', response.data.token);
         return response.data.userInformation;

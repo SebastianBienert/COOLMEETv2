@@ -16,6 +16,8 @@ namespace CoolMeet.Repository.Interfaces
 
         Task<User> GetUserByEmail(string email);
 
+        Task<User> SetUserPhotoPath(string userId, string path);
+
         Task<bool> DeleteUser(string id);
 
         Task<User> UpdateUser(UpdateUserDTO user);

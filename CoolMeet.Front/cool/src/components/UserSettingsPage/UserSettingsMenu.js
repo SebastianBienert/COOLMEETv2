@@ -6,10 +6,20 @@ import AvatarPlaceholder from '../../assets/avatar.png'
 class UserSettingsMenu extends React.Component {
     constructor(props) {
         super(props);
+        this.state ={
+            photo : this.props.photoUrl || AvatarPlaceholder
+        }
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(this.state.photo !== nextProps.photoUrl){
+            this.setState({
+                photo : nextProps.photoUrl || AvatarPlaceholder
+            })
+        }
     }
 
     render() {
-        const image = this.props.photoUrl || AvatarPlaceholder;
         const {firstName, lastName} = this.props;
         const styling = {
             'text-transform' : 'capitalize',
@@ -28,7 +38,7 @@ class UserSettingsMenu extends React.Component {
                     style={{ height: '100%' }}
                 >
                     
-                    <img style={{'max-width' : '200px', 'max-height' : '200px'}} src={image}></img>
+                    <img style={{'max-width' : '200px', 'max-height' : '200px'}} src={this.state.photo}></img>
                     <div style={styling} class="text-center">{firstName} {lastName}</div>
                     <Menu.Item key="1" value={subPages.CHANGE_DATA} onClick={this.props.changePage}>Zmien dane profilowe</Menu.Item>
                     <Menu.Item key="2" value={subPages.CHANGE_PHOTO} onClick={this.props.changePage}>Zmien zdjęcie profilowe</Menu.Item>

@@ -18,7 +18,7 @@ import 'moment/locale/pl';
 import AllEvents from './components/AllEvents/AllEvents';
 import AddEventForm from './components/AddEventForm/AddEventForm';
 import UserSettingsPage from './components/UserSettingsPage/UserSettingsPage';
-import "react-placeholder/lib/reactPlaceholder.css";
+
 class App extends Component {
 
   constructor(props){
