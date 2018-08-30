@@ -84,7 +84,7 @@ class EventCard extends React.Component {
     }
 
     getTitle = () => {
-        if(this.props.event.administrator && this.props.event.administrator.id === this.props.user.id)
+        if(this.props.event.administrators && this.props.event.administrators.some(a => a.id === this.props.user.id))
         {
             return(
                 <Link to={`/eventAdministrationPanel/${this.props.event.id}`} >  

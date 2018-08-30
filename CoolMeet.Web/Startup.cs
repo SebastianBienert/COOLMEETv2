@@ -60,8 +60,6 @@ namespace CoolMeet.Web
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IStatusService, StatusService>();
-            services.AddScoped<IEventUserService, EventUserService>();
-            services.AddScoped<IEventUserRepository, EventUserRepository>();
             services.AddScoped<IStatusRepository, StatusRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<ICommentService, CommentService>();

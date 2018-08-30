@@ -1,6 +1,7 @@
 import React from 'react';
 import { Menu, Icon } from 'antd';
 import { subPages } from './UserSettingsPage';
+import {Image} from 'react-bootstrap';
 import AvatarPlaceholder from '../../assets/avatar.png'
 
 class UserSettingsMenu extends React.Component {
@@ -27,7 +28,7 @@ class UserSettingsMenu extends React.Component {
             'font-size' : '18px',
             'padding-bottom': '18px', 
             'padding-left': '24px',
-            'padding-right': '24px'
+            'padding-right': '24px',
         }
         return (
             <div>   
@@ -37,8 +38,7 @@ class UserSettingsMenu extends React.Component {
                     defaultOpenKeys={['sub1']}
                     style={{ height: '100%' }}
                 >
-                    
-                    <img style={{'max-width' : '200px', 'max-height' : '200px'}} src={this.state.photo}></img>
+                    <Image responsive src={this.state.photo}></Image>
                     <div style={styling} class="text-center">{firstName} {lastName}</div>
                     <Menu.Item key="1" value={subPages.CHANGE_DATA} onClick={this.props.changePage}>Zmien dane profilowe</Menu.Item>
                     <Menu.Item key="2" value={subPages.CHANGE_PHOTO} onClick={this.props.changePage}>Zmien zdjęcie profilowe</Menu.Item>

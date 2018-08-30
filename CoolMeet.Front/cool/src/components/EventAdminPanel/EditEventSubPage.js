@@ -7,27 +7,45 @@ import { DatePicker } from 'antd';
 import 'antd/dist/antd.css';  // or 'antd/dist/antd.less'
 import { withRouter} from 'react-router-dom'
 import moment from 'moment';
-import {FormControl, FormGroup, ControlLabel, Button, Panel, Row, Col} from 'react-bootstrap';
+import {FormControl, FormGroup, ControlLabel, Button, Panel, Row, Col, Form, Grid} from 'react-bootstrap';
+import toastr from 'toastr';
 
-class EditEvent extends React.Component {
-    constructor(params) {
-        super(params);
+class EditEventSubPage extends React.Component {
+    constructor(props) {
+        super(props);
         this.state = {
-            name: "",
-            country: "",
-            address:"",
-            city: "",
-            description: "",
-            start: "",
-            end: "",
-            status: "1",
+            id: props.id,
+            name: props.name,
+            country: props.country,
+            address: props.address,
+            city: props.city,
+            description: props.description,
+            start: props.startDate,
+            end: props.endDate,
+            status: props.status,
             statuses: [],
             formErrors: { name: '', city: '', start: '', end: '', country: '', address: '' },
-            valuesValid: { name: false, city: false, start: false, end: false, country: false, address: false },
-            startValue: null,
-            endValue: null,
+            valuesValid: { name: true, city: true, start: true, end: true, country: true, address: true },
+            startValue: moment(props.startDate),
+            endValue: moment(props.endDate),
             endOpen: false,
         };
+    }
+
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            id: nextProps.id,
+            name: nextProps.name,
+            country: nextProps.country,
+            address: nextProps.address,
+            city: nextProps.city,
+            description: nextProps.description,
+            start: nextProps.startDate,
+            end: nextProps.endDate,
+            status: nextProps.status,
+            startValue: moment(nextProps.startDate),
+            endValue: moment(nextProps.endDate),
+        })
     }
 
     renderStatuses = () => {
@@ -195,15 +213,15 @@ class EditEvent extends React.Component {
             country: this.state.country,
             city: this.state.city,
             address: this.state.address,
-            statusId: this.state.status,
+            statusId: this.state.status.id,
         };
-        const url = BASE_URL + "/Event";
-        axios.put(url, request)
+        axios.patch(`${BASE_URL}/Event/${this.state.id}`, request)
             .then(result => {
+                toastr.success("Wydarzenie zostało zmienione");
                 this.props.history.replace(`/eventInfo/${this.state.id}`)
             })
             .catch(function (error) {
-                alert("Operacja sie nie powiodla...")
+                toastr.error("Operacja nie powiodła się");
             });
     }
 
@@ -219,44 +237,22 @@ class EditEvent extends React.Component {
 
     componentDidMount() {
         this.getStatus();
-        axios.get(BASE_URL + `/Event/eventInfo/${this.props.match.params.id}`)
-        .then(response => {
-            this.setState({
-                id: response.data.id,
-                name: response.data.name,
-                country: response.data.country,
-                city: response.data.city,
-                description: response.data.description,
-                address: response.data.address,
-                start: response.data.startDate,
-                end: response.data.endDate,
-                status: response.data.status.id,
-                formErrors: { name: '', city: '', start: '', end: '', country: '', address: '' },
-                valuesValid: { name: true, city: true, start: true, end: true, country: true, address: true },
-                formValid: true,
-                endOpen: false,
-                startValue: moment(response.data.startDate),
-                endValue: moment(response.data.endDate)
-            });
-        })
-        .catch(error => console.log(error));
-
     }
 
 
     render() {
         const { startValue, endValue, endOpen } = this.state;
         return (
-            <div>
-                <form onSubmit={this.handleSubmit}>
-                    <h4 className="text-center">Edytuj wydarzenie!</h4>
-
+            <Grid fluid>
+                <Form onSubmit={this.handleSubmit}>
+                    <h1 style={{'margin-top' : '10px', 'margin-bottom':'20px'}} className="h3 font-weight-normal text-center">Edytuj wydarzenie</h1>
                     <FormGroup controlId="name">
-                        <input name="name" type="text" placeholder="Nazwa wydarzenia" id="name" value={this.state.name}
+                        <ControlLabel>Nazwa wydarzenia</ControlLabel>
+                        <FormControl name="name" type="text" placeholder="Nazwa wydarzenia" id="name" value={this.state.name}
                             onChange={this.handleInputChange} className="form-control" required />
                     </FormGroup>
 
-                    <FormGroup>
+                    <FormGroup style={{'margin-bottom' : '0px !important'}}>
                         <Row className="flex-row">
                              <Col sm={5} md={5} lg={5}
                                     smOffset={1} mdOffset={1} lgOffset={1}
@@ -299,21 +295,25 @@ class EditEvent extends React.Component {
                     </FormGroup>
 
                     <FormGroup controlId="address">
+                        <ControlLabel>Adres</ControlLabel>
                         <FormControl name="address" type="text" placeholder="Ulica" value={this.state.address}
                             onChange={this.handleInputChange} required />
                     </FormGroup>
 
                     <FormGroup controlId="city">
+                        <ControlLabel>Miasto</ControlLabel>
                         <FormControl name="city" type="text" placeholder="Miasto" value={this.state.city}
                             onChange={this.handleInputChange} required />
                     </FormGroup>
 
                     <FormGroup controlId="country">
+                        <ControlLabel>Kraj</ControlLabel>
                         <FormControl name="country" type="text" placeholder="Kraj" value={this.state.country}
                             onChange={this.handleInputChange} required />
                     </FormGroup>
 
                     <FormGroup controlId="description">
+                        <ControlLabel>Opis</ControlLabel>
                         <FormControl name="description" type="text" placeholder="Opis" value={this.state.description}
                             onChange={this.handleInputChange} />
                     </FormGroup>
@@ -328,22 +328,20 @@ class EditEvent extends React.Component {
                     <div className="text-center mt-4">
                         <Button className="btn btn-outline-secondary" disabled={!this.state.formValid} type="submit">Edytuj!</Button>
                     </div>
-                </form>
+                </Form>
                 <div>
                 {
-                    !this.state.formValid ?
-                        <Panel>
+                    !this.state.formValid &&
+                        <div className="card">
                             <FormErrors formErrors={this.state.formErrors} />
-                        </Panel>
-                        :
-                        null
+                        </div>
                 }
                 </div>
-            </div >
+            </Grid >
 
 
         )
     }
 }
 
-export default withAuth(withRouter(EditEvent));
+export default withAuth(withRouter(EditEventSubPage));

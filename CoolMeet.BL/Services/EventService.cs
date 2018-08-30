@@ -36,6 +36,12 @@ namespace CoolMeet.BL.Services
             return _mapper.Map<EventDTO>(eventEnitty);
         }
 
+        public async Task<IEnumerable<UserDto>> GetAdministrators(int eventId)
+        {
+            var adminsEntity = await _eventRepository.GetAdministrators(eventId);
+            return _mapper.Map<IEnumerable<User>, IEnumerable<UserDto>>(adminsEntity);
+        }
+
         public async Task<EventDTO> AddEvent(AddEventDTO eventDto)
         {
             var eventEntity = _mapper.Map<Event>(eventDto);
@@ -59,6 +65,31 @@ namespace CoolMeet.BL.Services
             var eventEntity = _mapper.Map<Event>(eventDto);
             var result = await _eventRepository.UpdateEvent(eventEntity);
             return _mapper.Map<EventDTO>(result);
+        }
+
+        public async Task<JoinEventDTO> AddUserToEvent(JoinEventDTO joinEventDto)
+        {
+            var eventUserEntity = _mapper.Map<EventUser>(joinEventDto);
+
+            return _mapper.Map<JoinEventDTO>(await _eventRepository.AddEventUser(eventUserEntity));
+        }
+
+        public async Task<EventDTO> DeleteUserFromEvent(string userId, int eventId)
+        {
+            var entity = await _eventRepository.DeleteEventUser(userId, eventId);
+            return _mapper.Map<Event, EventDTO>(entity);
+        }
+
+        public async Task<EventDTO> AssignAdministratorRights(string userId, int eventId)
+        {
+            var entity = await _eventRepository.AssignAdministratorRights(userId, eventId);
+            return _mapper.Map<Event, EventDTO>(entity);
+        }
+
+        public async Task<JoinEventDTO> GetEventUserEntity(int id)
+        {
+            var entity = await _eventRepository.GetEventUser(id);
+            return _mapper.Map<JoinEventDTO>(entity);
         }
     }
 }

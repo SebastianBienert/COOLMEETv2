@@ -19,5 +19,19 @@ namespace CoolMeet.Repository.Interfaces
         Task<Event> UpdateEvent(Event eventEntity);
 
         Task<IEnumerable<Event>> GetLoggedUserEvents(string id);
+
+        Task<IEnumerable<EventUser>> GetAllEventUsers();
+
+        Task<EventUser> GetEventUser(int id);
+
+        Task<EventUser> AddEventUser(EventUser eventUser);
+
+        Task<Event> DeleteEventUser(string userId, int eventId);
+
+        Task<IEnumerable<User>> GetAdministrators(int eventId);
+
+        Task<Event> AssignAdministratorRights(string userId, int eventId);
+
+        Task<bool> UpdateEventUser(EventUser eventUser);
     }
 }

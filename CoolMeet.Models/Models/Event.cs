@@ -40,5 +40,7 @@ namespace CoolMeet.Models.Models
         public virtual ICollection<EventUser> Users { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
+
+        public virtual ICollection<TagEvent> TagEvents { get; set; }
     }
 }

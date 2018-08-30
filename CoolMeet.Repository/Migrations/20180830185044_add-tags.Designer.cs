@@ -11,9 +11,10 @@ using System;
 namespace CoolMeet.Repository.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20180830185044_add-tags")]
+    partial class addtags
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,7 +137,11 @@ namespace CoolMeet.Repository.Migrations
 
                     b.Property<DateTime>("Created");
 
+                    b.Property<int>("Id");
+
                     b.HasKey("TagId", "EventId");
+
+                    b.HasAlternateKey("Id");
 
                     b.HasIndex("EventId");
 

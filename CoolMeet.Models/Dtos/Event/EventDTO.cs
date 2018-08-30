@@ -25,7 +25,9 @@ namespace CoolMeet.Models.Dtos
 
         public IEnumerable<UserShortDTO> Users { get; set; }
 
-        public UserShortDTO Administrator { get; set; }
+        public IEnumerable<UserShortDTO> Administrators { get; set; }
+
+        public IEnumerable<TagDTO> Tags { get; set; }
 
         public IEnumerable<CommentDTO> Comments { get; set; }
     }

@@ -1,4 +1,5 @@
-﻿using CoolMeet.BL.Interfaces;
+﻿using System.Linq;
+using CoolMeet.BL.Interfaces;
 using CoolMeet.Models.Dtos;
 using CoolMeet.Models.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -15,17 +16,14 @@ namespace CoolMeet.Web.Controllers
     {
         private readonly IEventService _eventService;
 
-        private readonly IEventUserService _eventUserService;
-
         private readonly IStatusService _statusService;
 
         private readonly UserManager<User> _userManager;
 
-        public EventController(IEventService eventService, IEventUserService eventUserService,
+        public EventController(IEventService eventService,
             IStatusService statusService, UserManager<User> userManager)
         {
             _eventService = eventService;
-            _eventUserService = eventUserService;
             _statusService = statusService;
             _userManager = userManager;
         }
@@ -68,7 +66,7 @@ namespace CoolMeet.Web.Controllers
         [HttpGet("roles/{id}", Name = "GetEventRoleById")]
         public async Task<IActionResult> GetEventUser(int id)
         {
-            var dto = await _eventUserService.GetEventUserEntity(id);
+            var dto = await _eventService.GetEventUserEntity(id);
             if (dto != null)
             {
                 return Ok(dto);
@@ -102,16 +100,36 @@ namespace CoolMeet.Web.Controllers
             return NotFound();
         }
 
-        [HttpPost("leave/{eventId}")]
-        public async Task<IActionResult> LeaveUserFromEvent(int eventId)
+        [HttpDelete("{eventId}/user/{userId}")]
+        public async Task<IActionResult> DeleteUserFromEvent(int eventId, string userId)
         {
-            User user = await GetCurrentUserAsync();
-
-            if (await _eventUserService.LeaveUserFromEvent(user.Id, eventId))
+            var requestingUser = await GetCurrentUserAsync();
+            if ((await _eventService.GetAdministrators(eventId)).All(a => a.Id != requestingUser.Id))
             {
-                return Ok();
+                return Unauthorized();
+            }
+            var dto = await _eventService.DeleteUserFromEvent(userId, eventId);
+            if(dto != null)
+            {
+                return Ok(dto);
+            }
+            return NotFound();
+        }
+
+        [HttpPatch("{eventId}/user/{userId}")]
+        public async Task<IActionResult> AssignAdministratorRights(int eventId, string userId)
+        {
+            var requestingUser = await GetCurrentUserAsync();
+            if ((await _eventService.GetAdministrators(eventId)).All(a => a.Id != requestingUser.Id))
+            {
+                return Unauthorized();
             }
 
+            var dto = await _eventService.AssignAdministratorRights(userId, eventId);
+            if (dto != null)
+            {
+                return Ok(dto);
+            }
             return NotFound();
         }
 
@@ -120,7 +138,7 @@ namespace CoolMeet.Web.Controllers
         {
             User user = await GetCurrentUserAsync();
 
-            var addEventUser = await _eventUserService.AddUserToEvent(
+            var addEventUser = await _eventService.AddUserToEvent(
                 new JoinEventDTO
                 {
                     EventId = eventId,
@@ -136,8 +154,8 @@ namespace CoolMeet.Web.Controllers
             return BadRequest();
         }
 
-        [HttpPut]
-        public async Task<IActionResult> EditEvent([FromBody] AddEventDTO eventDto)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> EditEvent([FromBody] AddEventDTO eventDto, int id)
         {
             var editedDto = await _eventService.UpdateEvent(eventDto);
 
@@ -156,7 +174,7 @@ namespace CoolMeet.Web.Controllers
 
             if (createdEvent != null)
             {
-                var addEventUser = await _eventUserService.AddUserToEvent(
+                var addEventUser = await _eventService.AddUserToEvent(
                     new JoinEventDTO
                     {
                         EventId = createdEvent.Id,

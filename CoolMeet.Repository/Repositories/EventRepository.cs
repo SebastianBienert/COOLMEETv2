@@ -21,7 +21,11 @@ namespace CoolMeet.Repository.Repositories
 
         public async Task<IEnumerable<Event>> GetAllEvents()
         {
-            return await _context.Events.Include(e => e.Users).ThenInclude(eu => eu.User).Include(s => s.Status).Include(c => c.Comments)
+            return await _context.Events
+                .Include(e => e.Users).ThenInclude(eu => eu.User)
+                .Include(s => s.Status)
+                .Include(c => c.Comments)
+                .Include(e => e.TagEvents).ThenInclude(te => te.Tag)
                 .ToListAsync();
         }
 
@@ -31,6 +35,7 @@ namespace CoolMeet.Repository.Repositories
                 .Include(e => e.Users).ThenInclude(eu => eu.User)
                 .Include(s => s.Status)
                 .Include(c => c.Comments)
+                .Include(e => e.TagEvents).ThenInclude(te => te.Tag)
                 .Where(u => u.Users.Any(ue => ue.UserId == id))
                 .ToListAsync();
 
@@ -42,6 +47,7 @@ namespace CoolMeet.Repository.Repositories
             return await _context.Events.Where(e => e.Id == id).Include(e => e.Users).ThenInclude(eu => eu.User)
                 .Include(c => c.Comments).ThenInclude(eu => eu.User)
                 .Include(s => s.Status)
+                .Include(e => e.TagEvents).ThenInclude(te => te.Tag)
                 .SingleOrDefaultAsync();
         }
 
@@ -71,7 +77,6 @@ namespace CoolMeet.Repository.Repositories
             _context.Events.Remove(eventToDelete);
             await _context.SaveChangesAsync();
             return true;
-           
         }
 
         public async Task<Event> UpdateEvent(Event eventEntity)
@@ -92,6 +97,80 @@ namespace CoolMeet.Repository.Repositories
             }
 
             return null;
+        }
+
+        public async Task<IEnumerable<EventUser>> GetAllEventUsers()
+        {
+            return await _context.EventUsers.Include(eu => eu.User)
+                .Include(eu => eu.Event).ToListAsync();
+        }
+
+        public async Task<EventUser> GetEventUser(int id)
+        {
+            return await _context.EventUsers.Include(eu => eu.User)
+                .Include(eu => eu.Event).SingleOrDefaultAsync(eu => eu.Id == id);
+        }
+
+        public async Task<EventUser> AddEventUser(EventUser eventUser)
+        {
+            if (_context.EventUsers.Any(x => x.UserId == eventUser.UserId && x.EventId == eventUser.EventId))
+            {
+                return null;
+            }
+            eventUser.Created = DateTime.Now;
+            eventUser.Event = await _context.Events.SingleOrDefaultAsync(e => e.Id == eventUser.EventId);
+            eventUser.User = await _context.Users.SingleOrDefaultAsync(u => u.Id == eventUser.UserId);
+            await _context.EventUsers.AddAsync(eventUser);
+            await _context.SaveChangesAsync();
+            return eventUser;
+        }
+
+
+        public async Task<Event> DeleteEventUser(string userId, int eventId)
+        {
+            var entityToDelete = await _context.EventUsers.SingleOrDefaultAsync(x => (x.UserId == userId) && (x.EventId == eventId));
+            if (entityToDelete == null)
+            {
+                return null;
+            }
+            _context.EventUsers.Remove(entityToDelete);
+            await _context.SaveChangesAsync();
+            return await GetEvent(eventId);
+        }
+
+        public async Task<IEnumerable<User>> GetAdministrators(int eventId)
+        {
+            var admins = await _context.EventUsers
+                            .Where(eu => eu.EventId == eventId && eu.UserType == "Administrator")
+                            .Select(eu => eu.User)
+                            .ToArrayAsync();
+            return admins;
+        }
+
+        public async Task<Event> AssignAdministratorRights(string userId, int eventId)
+        {
+            var entityToUpdate = await _context.EventUsers.FirstOrDefaultAsync(eu => eu.EventId == eventId && eu.UserId == userId);
+            if (entityToUpdate != null)
+            {
+                entityToUpdate.UserType = "Administrator";
+                await _context.SaveChangesAsync();
+                return await GetEvent(eventId);
+            }
+
+            return null;
+        }
+
+        public async Task<bool> UpdateEventUser(EventUser eventUser)
+        {
+            var entityToUpdate = await _context.EventUsers.Include(eu => eu.User).Include(eu => eu.Event).
+                SingleOrDefaultAsync(e => e.Id == eventUser.Id);
+            if (entityToUpdate != null)
+            {
+                _context.Entry(entityToUpdate).CurrentValues.SetValues(entityToUpdate);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
     }
 }

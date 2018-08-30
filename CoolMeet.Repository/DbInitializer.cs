@@ -12,13 +12,17 @@ namespace CoolMeet.Repository
         {
             RemoveData(context);
 
-            var statusEnable = new Status
+            var statusAvailable = new Status
             {
                 Description = "Dostępny"
             };
-            var statusDisenable = new Status
+            var statusUnavailable = new Status
             {
                 Description = "Niedostępny"
+            };
+            var tag = new Tag
+            {
+                Name = "Wroclaw"
             };
             var freeUser = new User()
             {
@@ -45,7 +49,7 @@ namespace CoolMeet.Repository
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(2),
                 StatusId = 1,
-                Status = statusEnable
+                Status = statusAvailable
             };
             var eventUser = new EventUser()
             {
@@ -54,12 +58,21 @@ namespace CoolMeet.Repository
                 User = testUser,
                 UserType = "Administrator"
             };
-            testEvent.Users = new List<EventUser>{ eventUser};
+            var tagEvent = new TagEvent()
+            {
+                Created = DateTime.Now,
+                Event = testEvent,
+                Tag = tag
+            };
 
-            context.Add(statusEnable);
-            context.Add(statusDisenable);
+            testEvent.Users = new List<EventUser>{ eventUser};
+            testEvent.TagEvents = new List<TagEvent>{tagEvent};
+
+            context.Add(statusAvailable);
+            context.Add(statusUnavailable);
             context.Add(freeUser);
             context.Add(testEvent);
+            
             context.SaveChanges();
         }
 

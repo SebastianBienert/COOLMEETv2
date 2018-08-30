@@ -38,11 +38,13 @@ namespace CoolMeet.Web.Config
                         });
                     });
             CreateMap<Event, EventDTO>()
-                .ForMember(dest => dest.Administrator,
+                .ForMember(dest => dest.Administrators,
                     opts => opts.MapFrom(src =>
-                        src.Users.FirstOrDefault(userEvent => userEvent.UserType == "Administrator")))
+                        src.Users.Where(userEvent => userEvent.UserType == "Administrator")))
                 .ForMember(dest => dest.Comments, opts => opts.MapFrom(src => src.Comments))
-                .ForMember(s => s.Status, c => c.MapFrom(m => m.Status));
+                .ForMember(s => s.Status, c => c.MapFrom(m => m.Status))
+                .ForMember(dest => dest.Tags, opts => opts.MapFrom(src => src.TagEvents.Select(t => t.Tag)));
+                
             CreateMap<EventDTO, Event>();
             CreateMap<CommentDTO, Comment>().ReverseMap();
             CreateMap<EditCommentDTO, Comment>().ReverseMap();
@@ -51,6 +53,7 @@ namespace CoolMeet.Web.Config
             CreateMap<EventUser, JoinEventDTO>().ReverseMap();
             CreateMap<RegistrationDTO, User>();
             CreateMap<Status, StatusDto>().ReverseMap();
+            CreateMap<Tag, TagDTO>().ReverseMap();
         }
     }
 }

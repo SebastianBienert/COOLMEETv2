@@ -44,8 +44,6 @@ class EventInfo extends React.Component {
         return allIds.includes(this.props.user.id)
     }
 
-
-
     render() {
         const event = this.state.event;
         const address = `${event.country} ${event.city} ${event.address}`;

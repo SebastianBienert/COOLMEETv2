@@ -19,7 +19,7 @@ namespace CoolMeet.Web
                 try
                 {
                     var context = services.GetRequiredService<Context>();
-                   // DbInitializer.Initialize(context);
+                    DbInitializer.Initialize(context);
                 }
                 catch (Exception ex)
                 {

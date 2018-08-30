@@ -10,6 +10,20 @@ namespace CoolMeet.Repository
 {
     public sealed class Context : IdentityDbContext<User>
     {
+        public new DbSet<User> Users { get; set; }
+
+        public DbSet<Event> Events { get; set; }
+
+        public DbSet<EventUser> EventUsers { get; set; }
+
+        public DbSet<Status> Statuses { get; set; }
+
+        public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<Tag> Tags { get; set; }
+
+        public DbSet<TagEvent> TagEvents { get; set; }
+
         public static readonly LoggerFactory MyLoggerFactory
             = new LoggerFactory(new[]
             {
@@ -41,6 +55,8 @@ namespace CoolMeet.Repository
 
             builder.Entity<IdentityUserToken<string>>()
                 .HasKey(x => new { x.UserId });
+
+            builder.Entity<TagEvent>().HasKey(te => new {te.TagId, te.EventId});
         }
 
 
@@ -51,11 +67,7 @@ namespace CoolMeet.Repository
         }
 
 
-        public new DbSet<User> Users { get; set; }
-        public DbSet<Event> Events { get; set; }
-        public DbSet<EventUser> EventUsers { get; set; }
-        public DbSet<Status> Statuses { get; set; }
-        public DbSet<Comment> Comments { get; set; }
+       
 
     }
 }

@@ -12,7 +12,6 @@ import { Router, Route, Switch} from 'react-router-dom';
 import LoggedUserEventList from './components/LoggedUserEventList/LoggedUserEventList';
 import {authService} from './services/AuthService';
 import EventAdminPanel from './components/EventAdminPanel/EventAdminPanel';
-import EditEvent from './components/EditEvent/EditEvent';
 import moment from 'moment';
 import 'moment/locale/pl';
 import AllEvents from './components/AllEvents/AllEvents';
@@ -68,7 +67,6 @@ class App extends Component {
                 <Route path="/register" component={RegisterPage}/>
                 <Route path="/eventInfo/:id" component={EventInfo} />
                 <Route path="/eventAdministrationPanel/:id" component={EventAdminPanel} />
-                <Route path="/editEvent/:id" component={EditEvent} />
                 <Route path="/userSettings" component={UserSettingsPage} />
               </Switch>
             </div>
