@@ -14,6 +14,7 @@ export const DEFAULT_EVENT = {
         description: "",
     },
     users: [],
+    tags : []
 }
 
 export const EVENT_STATUS = {

@@ -24,8 +24,5 @@ function login(email, password){
     .then(response => {
         localStorage.setItem('token', response.data.token);
         return response.data.userInformation;
-    })
-    .catch(response => {
-        console.log(response);
     });
 }

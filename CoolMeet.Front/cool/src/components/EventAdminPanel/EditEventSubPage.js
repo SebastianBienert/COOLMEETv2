@@ -15,7 +15,7 @@ class EditEventSubPage extends React.Component {
         super(props);
         this.state = {
             id: props.id,
-            name: props.name,
+            name: props.name || "",
             country: props.country,
             address: props.address,
             city: props.city,
@@ -245,14 +245,14 @@ class EditEventSubPage extends React.Component {
         return (
             <Grid fluid>
                 <Form onSubmit={this.handleSubmit}>
-                    <h1 style={{'margin-top' : '10px', 'margin-bottom':'20px'}} className="h3 font-weight-normal text-center">Edytuj wydarzenie</h1>
+                    <h1 style={{'marginTop' : '10px', 'marginBottom':'20px'}} className="h3 font-weight-normal text-center">Edytuj wydarzenie</h1>
                     <FormGroup controlId="name">
                         <ControlLabel>Nazwa wydarzenia</ControlLabel>
-                        <FormControl name="name" type="text" placeholder="Nazwa wydarzenia" id="name" value={this.state.name}
+                        <FormControl name="name" type="text" placeholder="Nazwa wydarzenia" value={this.state.name}
                             onChange={this.handleInputChange} className="form-control" required />
                     </FormGroup>
 
-                    <FormGroup style={{'margin-bottom' : '0px !important'}}>
+                    <FormGroup style={{'marginBottom' : '0px !important'}}>
                         <Row className="flex-row">
                              <Col sm={5} md={5} lg={5}
                                     smOffset={1} mdOffset={1} lgOffset={1}

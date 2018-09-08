@@ -4,6 +4,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CoolMeet.Models.Dtos;
 using CoolMeet.Models.Models;
 using CoolMeet.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -171,6 +172,38 @@ namespace CoolMeet.Repository.Repositories
                 return true;
             }
             return false;
+        }
+
+        public async Task<IEnumerable<TagEvent>> UpdateTags(int eventId, List<TagDTO> tagDtos)
+        {
+            var tagsToAdd = tagDtos.Where(dto => !_context.Tags.Select(t => t.Name).Contains(dto.Name));
+
+            foreach (var tag in tagsToAdd)
+            {
+                _context.Tags.Add(new Tag
+                {
+                    Created = DateTime.Now,
+                    Name = tag.Name
+                });
+            }
+            _context.SaveChanges();
+            _context.TagEvents.RemoveRange(_context.TagEvents.Where(te => te.EventId == eventId));
+            var tagsToAttach = new List<TagEvent>();
+            foreach (var tag in tagDtos)
+            {
+                tagsToAttach.Add(new TagEvent()
+                {
+                    Created = DateTime.Now,
+                    EventId = eventId,
+                    Tag = _context.Tags.FirstOrDefault(t => t.Name == tag.Name)
+                });
+            }
+
+            //_context.Events.FirstOrDefault(e => e.Id == eventId).TagEvents = tagsToAttach;
+            _context.TagEvents.AddRange(tagsToAttach);
+            _context.SaveChanges();
+
+            return tagsToAttach;
         }
     }
 }

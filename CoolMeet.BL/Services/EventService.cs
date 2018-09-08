@@ -91,5 +91,11 @@ namespace CoolMeet.BL.Services
             var entity = await _eventRepository.GetEventUser(id);
             return _mapper.Map<JoinEventDTO>(entity);
         }
+
+        public async Task<IEnumerable<TagDTO>> UpdateTags(int eventId, List<TagDTO> tagDtos)
+        {
+            var result = await _eventRepository.UpdateTags(eventId, tagDtos);
+            return _mapper.Map<IEnumerable<TagDTO>>(result);
+        }
     }
 }

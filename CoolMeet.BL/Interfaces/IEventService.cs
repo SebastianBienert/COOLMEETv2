@@ -30,5 +30,7 @@ namespace CoolMeet.BL.Interfaces
         Task<EventDTO> AssignAdministratorRights(string userId, int eventId);
 
         Task<JoinEventDTO> GetEventUserEntity(int id);
+
+        Task<IEnumerable<TagDTO>> UpdateTags(int eventId, List<TagDTO> tagDtos);
     }
 }

@@ -20,10 +20,34 @@ namespace CoolMeet.Repository
             {
                 Description = "Niedostępny"
             };
-            var tag = new Tag
+            var tags = new List<Tag>
             {
-                Name = "Wroclaw"
+                new Tag
+                {
+                    Name = "Wroclaw"
+                },
+                new Tag
+                {
+                    Name = "Programowanie"
+                },
+                new Tag
+                {
+                    Name = "Polska"
+                },
+                new Tag
+                {
+                    Name = "WrocSharp"
+                },
+                new Tag
+                {
+                    Name = ".NET"
+                },
+                new Tag
+                {
+                    Name = "Spotkanie"
+                }
             };
+     
             var freeUser = new User()
             {
                 Created = DateTime.Now,
@@ -58,15 +82,22 @@ namespace CoolMeet.Repository
                 User = testUser,
                 UserType = "Administrator"
             };
-            var tagEvent = new TagEvent()
+
+
+            var tagEvents = new List<TagEvent>();
+            foreach (var tag in tags)
             {
-                Created = DateTime.Now,
-                Event = testEvent,
-                Tag = tag
-            };
+                tagEvents.Add(new TagEvent()
+                {
+                    Created = DateTime.Now,
+                    Event = testEvent,
+                    Tag = tag
+                });
+            }
+            
 
             testEvent.Users = new List<EventUser>{ eventUser};
-            testEvent.TagEvents = new List<TagEvent>{tagEvent};
+            testEvent.TagEvents = tagEvents;
 
             context.Add(statusAvailable);
             context.Add(statusUnavailable);

@@ -4,7 +4,8 @@ import {Link} from 'react-router-dom';
 import {BASE_URL} from "../constants";
 import './EventCard.css';
 import withAuth from '../withAuth'
-import {Panel, Button} from 'react-bootstrap';
+import { TagCloud } from "react-tagcloud";
+import {Panel, Button, Row, Col} from 'react-bootstrap';
 
 class EventCard extends React.Component {
 
@@ -20,9 +21,9 @@ class EventCard extends React.Component {
     
     checkStatus = () => {
         if (this.props.event.status.id === 1) {
-            return  <span className="pull-right active">(Aktywny)</span>;
+            return  <div className="active">Aktywny</div>;
         }
-        return <span className="pull-right inactive">(Nieaktywny)</span>
+        return <div className="inactive">Nieaktywny</div>
     }
 
 
@@ -100,31 +101,61 @@ class EventCard extends React.Component {
         }
     }
 
-    render(){
-    return (
+    customRenderer = (tag, size, color) => {
+        return <span key={tag.value} style={{color}} className={`tag-${size} badge`}>{tag.value}</span>;
+    };
 
+    render(){ 
+        const tagData = this.props.event.tags.map(tag => {
+           return{
+                key : tag.id,
+                value : `#${tag.name}`,
+                count : 10
+           } 
+        });
+        const colorOptions = {
+            luminosity: 'light',
+            hue: 'blue'
+          };
+    return (
 		<Panel>
 			<Panel.Body>
-				<span className="card-meta pull-right">{new Date(this.props.event.startDate).toDateString("llll")} - {new Date(this.props.event.endDate).toDateString()}</span>
-				<h4 className="title">
-                    {this.getTitle()}
-                    {this.checkStatus()}     
-				</h4>
-                <p className="summary pull-left">
-                    {this.props.event.country}, {this.props.event.city} {this.props.event.address}
-                </p>
+                <Row>
+                    <Col xs={3}>
+                        <h4 className="title">
+                            {this.getTitle()} 
+                        </h4>
+                        <p className="summary pull-left">
+                            {this.props.event.country}, {this.props.event.city} {this.props.event.address}
+                        </p>
+                    </Col>
 
-                <p className="summary pull-right"> 
-                    {this.props.loggedIn && 
-                    <Link to={`/eventInfo/${this.props.event.id}`} >  
-                        <Button type="button" bsStyle="info">
-                            Info
-                            <span className="glyphicon glyphicon-info-sign"></span>
-                        </Button>
-                    </Link>}
-                    {this.getButtonJoinOrLeave()} 
+                    <Col xs={3}>
+                        <TagCloud minSize={12}
+                            maxSize={35}
+                            tags={tagData}
+                            colorOptions={colorOptions}
+                            renderer={this.customRenderer}
+                            onClick={tag => alert(`'${tag.value}' was selected!`)} />
+                    </Col>
+
                     
-                </p>
+
+                    <Col xsOffset={3} xs={3}>
+                        {this.checkStatus()}    
+                        <div className="card-meta pull-right">{new Date(this.props.event.startDate).toDateString("llll")} - {new Date(this.props.event.endDate).toDateString()}</div>
+                        <div className="summary pull-right"> 
+                            {this.props.loggedIn && 
+                            <Link to={`/eventInfo/${this.props.event.id}`} >  
+                                <Button type="button" bsStyle="info">
+                                    Info
+                                    <span className="glyphicon glyphicon-info-sign"></span>
+                                </Button>
+                            </Link>}
+                            {this.getButtonJoinOrLeave()} 
+                        </div>
+                    </Col>
+                </Row>
 			</Panel.Body>  
 		</Panel>
       );

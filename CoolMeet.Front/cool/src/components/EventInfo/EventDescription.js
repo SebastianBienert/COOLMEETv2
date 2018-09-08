@@ -5,6 +5,7 @@ import moment from 'moment';
 import {BASE_URL, DEFAULT_EVENT} from "../constants";
 import Map from '../Map/Map';
 import CommentsList from '../CommentsList/CommentsList';
+import { TagCloud } from "react-tagcloud";
 import {ListGroupItem, ListGroup} from 'react-bootstrap';
 
 class EventDescription extends React.Component {
@@ -39,8 +40,22 @@ class EventDescription extends React.Component {
             [event.target.name]: event.target.value
         });
     }
+
+    customRenderer = (tag, size, color) => {
+        return <span key={tag.value} style={{color}} className={`tag-${size} badge`}>{tag.value}</span>;
+    };
     
     render() {
+        const colorOptions = {
+            luminosity: 'light',
+            hue: 'blue'
+          };
+        const tagData = this.props.event.tags.map(tag => {
+            return{
+                    key : tag.id,
+                    value : `#${tag.name}`,
+                    count : 10
+        }});
         const event = this.props.event.id ? this.props.event : DEFAULT_EVENT;
         const address = `${event.country} ${event.city} ${event.address}`;
         const startDate = moment(event.startDate).format('MMMM Do YYYY, h:mm');
@@ -62,6 +77,16 @@ class EventDescription extends React.Component {
                     <ListGroupItem header="Status">
                         {event.status.description}
                     </ListGroupItem>
+                    {tagData.length > 0 &&
+                    <ListGroupItem>
+                        <TagCloud minSize={12}
+                                maxSize={35}
+                                tags={tagData}
+                                colorOptions={colorOptions}
+                                renderer={this.customRenderer}
+                                onClick={tag => alert(`'${tag.value}' was selected!`)} />
+                    </ListGroupItem>
+                    }
             </ListGroup>
       );
     }

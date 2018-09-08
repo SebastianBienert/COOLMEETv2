@@ -6,7 +6,6 @@ import axios from "axios"
 import RegisterPage from './components/RegisterPage/RegisterPage'
 import './App.css';
 import { history } from './helpers/history';
-import { alertActions } from './actions/alertActions';
 import { connect } from 'react-redux';
 import { Router, Route, Switch} from 'react-router-dom';
 import LoggedUserEventList from './components/LoggedUserEventList/LoggedUserEventList';
@@ -24,8 +23,7 @@ class App extends Component {
     super(props);
     const { dispatch } = this.props;
     history.listen((location, action) => {
-        // clear alert on location change
-        dispatch(alertActions.clear());
+ 
     });
     axios.interceptors.request.use(
       config => {

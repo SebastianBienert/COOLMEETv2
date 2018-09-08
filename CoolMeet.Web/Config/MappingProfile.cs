@@ -54,6 +54,9 @@ namespace CoolMeet.Web.Config
             CreateMap<RegistrationDTO, User>();
             CreateMap<Status, StatusDto>().ReverseMap();
             CreateMap<Tag, TagDTO>().ReverseMap();
+            CreateMap<TagEvent, TagDTO>()
+                .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.Tag.Name))
+                .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.Tag.Id));
         }
     }
 }

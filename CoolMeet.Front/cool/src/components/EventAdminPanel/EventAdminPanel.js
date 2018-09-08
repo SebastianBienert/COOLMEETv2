@@ -6,9 +6,10 @@ import EditEventSubPage from './EditEventSubPage';
 import EventAdminPanelMenu from './EventAdminPanelMenu';
 import DeleteEventSubPage from './DeleteEvenSubPage';
 import ManageUsersSubPage from './ManageUsersSubPage';
+import ManageTagsSubPage from './ManageTagsSubPage';
 import '../EventAdminPanel/EventAdminPanel.css';
 import { withRouter } from 'react-router-dom'
-import { Layout } from 'antd';
+import { Layout, Tag} from 'antd';
 import toastr from 'toastr';
 
 const {  Content, Footer, Sider } = Layout;
@@ -16,14 +17,17 @@ const {  Content, Footer, Sider } = Layout;
 export const subPages = {
     EDIT_EVENT : 'EDIT_EVENT',
     DELETE_EVENT : 'DELETE_EVENT',
-    MANAGE_USERS : 'MANAGE_USERS'
+    MANAGE_USERS : 'MANAGE_USERS',
+    MANAGE_TAGS : 'MANAGE_TAGS'
 }
 class EventAdminPanel extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             event: DEFAULT_EVENT,
-            subPage : subPages.EDIT_EVENT
+            subPage : subPages.EDIT_EVENT,
+            tagInputValue : "",
+            inputTagVisible : false
         };
     }
 
@@ -80,16 +84,69 @@ class EventAdminPanel extends React.Component {
                                         deleteUser={this.deleteUser}
                                         assignRights={this.assignAdminRights}/>
             }
+            case subPages.MANAGE_TAGS:{
+                return <ManageTagsSubPage
+                         customRenderer={this.customRenderer} 
+                         tags={this.state.event.tags}
+                         handleInputChange={this.handleTagInputChange}
+                         handleInputConfirm={this.handleTagInputConfirm}
+                         inputValue={this.state.tagInputValue}
+                         inputVisible={this.state.inputTagVisible}
+                         showInput = {this.showTagInput}
+                         confirmTagChanges = {this.sendUpdateTags}
+                          />
+            }
             default:{
                 return 'XD';
             }
         }
     }
 
+    sendUpdateTags = (e) => {
+        e.preventDefault();
+        axios.patch(`${BASE_URL}/Event/${this.props.match.params.id}/tags`, this.state.event.tags)
+        .then(resp =>{
+            this.setState(prevState =>( {
+                event : {
+                    ...prevState.event,
+                    tags : resp.data
+                }
+            }))
+            toastr.success("Zaktualizowano tagi");
+        })
+        .catch(error =>{
+            toastr.error("Cos poszlo nie tak");
+        })
+    }
+
+    showTagInput = () => {
+        this.setState({ inputTagVisible: true });
+    }
     changeCurrentSubPage = (event) => {
         this.setState({
             subPage : event.item.props.value
         });
+    }
+
+    handleTagInputChange = (e) => {
+        this.setState({ tagInputValue: e.target.value });
+    }
+
+    handleTagInputConfirm = () => {
+        const state = this.state;
+        const inputValue = {
+            id : Math.ceil(Math.random() * 1000 + 100),
+            name : this.state.tagInputValue
+        }
+        let tags = this.state.event.tags;
+        if (this.state.tagInputValue && tags.indexOf(this.state.tagInputValue) === -1) {
+            this.setState(prevState => ({
+                event: {
+                    ...prevState.event,
+                    tags : [...tags, inputValue]
+                }
+            }))
+        }
     }
 
     deleteEvent = (event) => {
@@ -102,7 +159,20 @@ class EventAdminPanel extends React.Component {
         .catch(error =>{
             toastr.error("Operacja nie powiodła się");
         });
-    }
+    };
+
+    deleteTag = (tag) =>{
+        this.setState(prevState => ({
+            event: {
+                ...prevState.event,
+                tags : prevState.event.tags.filter(t => t.id !== tag.key)
+            }
+        }))
+    };
+
+    customRenderer = (tag, size, color) => {
+        return <Tag key={tag.value} afterClose={() => this.deleteTag(tag)} closable>{tag.value}</Tag>
+    };
 
     render() {
         return (

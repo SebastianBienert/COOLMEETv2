@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using CoolMeet.Models.Dtos;
 using CoolMeet.Models.Models;
 
 namespace CoolMeet.Repository.Interfaces
@@ -33,5 +34,7 @@ namespace CoolMeet.Repository.Interfaces
         Task<Event> AssignAdministratorRights(string userId, int eventId);
 
         Task<bool> UpdateEventUser(EventUser eventUser);
+
+        Task<IEnumerable<TagEvent>> UpdateTags(int eventId, List<TagDTO> tagDtos);
     }
 }

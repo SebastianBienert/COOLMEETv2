@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using CoolMeet.BL.Interfaces;
 using CoolMeet.Models.Dtos;
 using CoolMeet.Models.Models;
@@ -162,6 +163,17 @@ namespace CoolMeet.Web.Controllers
             if (editedDto != null)
             {
                 return Ok(editedDto);
+            }
+            return BadRequest();
+        }
+
+        [HttpPatch("{id}/tags")]
+        public async Task<IActionResult> EditEventTags(int id, [FromBody] List<TagDTO> tagDtos)
+        {
+            var editedTags = await _eventService.UpdateTags(id, tagDtos);
+            if (editedTags != null)
+            {
+                return Ok(editedTags);
             }
             return BadRequest();
         }
