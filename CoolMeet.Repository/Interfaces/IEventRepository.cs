@@ -11,6 +11,8 @@ namespace CoolMeet.Repository.Interfaces
     {
         Task<IEnumerable<Event>> GetAllEvents();
 
+        Task<IEnumerable<Event>> GetEventsByTag(string tag);
+
         Task<Event> GetEvent(int id);
 
         Task<Event> AddEvent(Event eventEntity);

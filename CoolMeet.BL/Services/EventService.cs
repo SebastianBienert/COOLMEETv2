@@ -30,6 +30,12 @@ namespace CoolMeet.BL.Services
             return _mapper.Map<IEnumerable<EventDTO>>(events);
         }
 
+        public async Task<IEnumerable<EventDTO>> GetEventsByTag(string tag)
+        {
+            var events = await _eventRepository.GetEventsByTag(tag);
+            return _mapper.Map<IEnumerable<EventDTO>>(events);
+        }
+
         public async Task<EventDTO> GetEvent(int id)
         {
             var eventEnitty = await _eventRepository.GetEvent(id);

@@ -1,12 +1,12 @@
 import React from "react";
 import axios from "axios";
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import {BASE_URL} from "../constants";
 import './EventCard.css';
 import withAuth from '../withAuth'
 import { TagCloud } from "react-tagcloud";
 import {Panel, Button, Row, Col} from 'react-bootstrap';
-
+import { history } from '../../helpers/history';
 class EventCard extends React.Component {
 
     constructor(props)
@@ -102,7 +102,9 @@ class EventCard extends React.Component {
     }
 
     customRenderer = (tag, size, color) => {
-        return <span key={tag.value} style={{color}} className={`tag-${size} badge`}>{tag.value}</span>;
+        return (<Link key={tag.value} to= {`/events/tag/${tag.value.slice(1)}`}>
+                    <span key={tag.value} style={{color}} className={`tag-${size} badge`}>{tag.value}</span>
+                </Link>);
     };
 
     render(){ 
@@ -136,10 +138,8 @@ class EventCard extends React.Component {
                             tags={tagData}
                             colorOptions={colorOptions}
                             renderer={this.customRenderer}
-                            onClick={tag => alert(`'${tag.value}' was selected!`)} />
+                            />
                     </Col>
-
-                    
 
                     <Col xsOffset={3} xs={3}>
                         {this.checkStatus()}    

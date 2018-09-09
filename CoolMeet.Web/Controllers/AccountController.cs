@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using CoolMeet.BL.Interfaces;
 using CoolMeet.Models.Dtos;
 using CoolMeet.Models.Dtos.Security;
@@ -23,10 +24,13 @@ namespace CoolMeet.Web.Controllers
 
         private readonly IUserService _userService;
 
-        public AccountController(UserManager<User> userManager, IUserService userService)
+        private readonly IMapper _mapper;
+
+        public AccountController(UserManager<User> userManager, IUserService userService, IMapper mapper)
         {
             _userManager = userManager;
             _userService = userService;
+            _mapper = mapper;
         }
 
 

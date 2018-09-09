@@ -30,6 +30,18 @@ namespace CoolMeet.Repository.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Event>> GetEventsByTag(string tag)
+        {
+            return await _context.Events
+                .Where(e => e.TagEvents
+                    .Any(te => te.Tag.Name == tag))
+                .Include(e => e.Users).ThenInclude(eu => eu.User)
+                .Include(s => s.Status)
+                .Include(c => c.Comments)
+                .Include(e => e.TagEvents).ThenInclude(te => te.Tag)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Event>> GetLoggedUserEvents(string id)
         {
             var result = await _context.Events

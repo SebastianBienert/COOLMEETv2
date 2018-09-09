@@ -12,7 +12,7 @@ namespace CoolMeet.Web.Controllers
 {
     [Produces("application/json")]
     [Route("api/Event")]
-    [Authorize]
+    //[Authorize]
     public class EventController : BaseController
     {
         private readonly IEventService _eventService;
@@ -30,9 +30,13 @@ namespace CoolMeet.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetEvents()
+        public async Task<IActionResult> GetEvents([FromQuery] string tag = null)
         {
-            var events = await _eventService.GetAllEvents();
+            IEnumerable<EventDTO> events;
+            if (tag == null)
+                events = await _eventService.GetAllEvents();
+            else
+                events = await _eventService.GetEventsByTag(tag);
 
             if (events != null)
                 return Ok(events);

@@ -16,7 +16,8 @@ import 'moment/locale/pl';
 import AllEvents from './components/AllEvents/AllEvents';
 import AddEventForm from './components/AddEventForm/AddEventForm';
 import UserSettingsPage from './components/UserSettingsPage/UserSettingsPage';
-
+import TagPage from './components/TagPage/TagPage';
+import { userActions } from './actions/userActions';
 class App extends Component {
 
   constructor(props){
@@ -25,6 +26,7 @@ class App extends Component {
     history.listen((location, action) => {
  
     });
+
     axios.interceptors.request.use(
       config => {
         config.headers.Authorization = `bearer ${authService.getToken()}`
@@ -38,14 +40,14 @@ class App extends Component {
     }, function (error) {
       // Do something with response error
       if(error.response.status === 401){
-        authService.logout();
+        dispatch(userActions.logout());
+        // authService.logout();
         history.replace('/login')
       }
       return Promise.reject(error);
     });
 
     moment.locale('pl'); 
-
   }
 
   
@@ -59,13 +61,14 @@ class App extends Component {
               <Switch>
                 <Route exact path="/" component={LoginPage} />
                 <Route path="/LoggedUserEventList" component={LoggedUserEventList} />
-                <Route path="/events" component={AllEvents} /> 
+                <Route exact path="/events" component={AllEvents} /> 
                 <Route path="/newEvent" component={AddEventForm}/>
                 <Route path="/login" component={LoginPage}/>
                 <Route path="/register" component={RegisterPage}/>
-                <Route path="/eventInfo/:id" component={EventInfo} />
-                <Route path="/eventAdministrationPanel/:id" component={EventAdminPanel} />
+                <Route exact path="/eventInfo/:id" component={EventInfo} />
+                <Route exact path="/eventAdministrationPanel/:id" component={EventAdminPanel} />
                 <Route path="/userSettings" component={UserSettingsPage} />
+                <Route exact path="/events/tag/:tagName" component={TagPage}/>
               </Switch>
             </div>
         </div>

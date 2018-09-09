@@ -11,6 +11,8 @@ namespace CoolMeet.BL.Interfaces
     {
         Task<IEnumerable<EventDTO>> GetAllEvents();
 
+        Task<IEnumerable<EventDTO>> GetEventsByTag(string tag);
+
         Task<EventDTO> GetEvent(int id);
 
         Task<EventDTO> AddEvent(AddEventDTO eventDto);

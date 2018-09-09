@@ -1,6 +1,6 @@
 import { userConstants } from '../constants/userConstants';
 import {store} from '../helpers/store'
-const initialState = {loggedIn: false};
+const initialState = {loggedIn: false };
 
 export function authentication(state = initialState, action) {
   switch (action.type) {
