@@ -5,6 +5,7 @@ import moment from 'moment';
 import {BASE_URL, DEFAULT_EVENT} from "../constants";
 import { TagCloud } from "react-tagcloud";
 import {ListGroupItem, ListGroup} from 'react-bootstrap';
+import {Link} from 'react-router-dom';
 
 class EventDescription extends React.Component {
     constructor(props){
@@ -40,7 +41,9 @@ class EventDescription extends React.Component {
     }
 
     customRenderer = (tag, size, color) => {
-        return <span key={tag.value} style={{color}} className={`tag-${size} badge`}>{tag.value}</span>;
+        return (<Link key={tag.value} to= {`/events/tag/${tag.value.slice(1)}`}>
+                    <span key={tag.value} style={{color}} className={`tag-${size} badge`}>{tag.value}</span>
+                </Link>);
     };
     
     render() {
@@ -80,8 +83,7 @@ class EventDescription extends React.Component {
                                 maxSize={35}
                                 tags={tagData}
                                 colorOptions={colorOptions}
-                                renderer={this.customRenderer}
-                                onClick={tag => alert(`'${tag.value}' was selected!`)} />
+                                renderer={this.customRenderer}/>
                     </ListGroupItem>
                     }
             </ListGroup>
