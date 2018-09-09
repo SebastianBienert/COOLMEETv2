@@ -1,15 +1,14 @@
 import React from 'react';
-import axios from "axios";
 import UserSettingsMenu from './UserSettingsMenu'
 import {connect} from 'react-redux';
 import withAuth from '../withAuth';
 import { withRouter} from 'react-router-dom'
-import { Layout, Menu, Icon } from 'antd';
+import { Layout } from 'antd';
 import ChangePasswordSubPage from './ChangePasswordSubPage';
 import ChangeUserDataSubPage from './ChangeUserDataSubPage';
 import ChangeUserPhotoSubPage from './ChangeUserPhotoSubPage';
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 export const subPages = {
     CHANGE_DATA : 'CHANGE_DATA',

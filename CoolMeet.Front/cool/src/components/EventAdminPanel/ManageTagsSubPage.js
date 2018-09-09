@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {Row, Col, ControlLabel, Grid, Button} from 'react-bootstrap';
 import {Tag, Input, Icon} from 'antd';
 import ManageTagCloud from './ManageTagCloud';

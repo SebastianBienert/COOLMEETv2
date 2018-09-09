@@ -1,10 +1,7 @@
 import React from 'react';
 import axios from "axios";
-import UserSettingsMenu from './UserSettingsMenu'
 import {connect} from 'react-redux';
-import withAuth from '../withAuth';
-import { withRouter} from 'react-router-dom'
-import {FormControl, FormGroup,Form, Button, Grid, ControlLabel, Col, Row} from 'react-bootstrap';
+import {FormControl, FormGroup,Form, Button, ControlLabel, Col, Row} from 'react-bootstrap';
 import { FormErrors } from '../FormErrors/FormErrors.js'
 import { BASE_URL } from '../constants';
 import {userActions} from '../../actions/userActions';

@@ -5,7 +5,7 @@ const UserInfo = ({photoUrl, name}) => {
     const image = photoUrl || AvatarPlaceholder;
     return (
         <span>
-            <img className="roundedImg" src={image}></img>
+            <img alt={name} className="roundedImg" src={image}></img>
             <span className="userName">{name}</span>
         </span>
     );

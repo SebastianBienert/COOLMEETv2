@@ -1,6 +1,6 @@
 import React from 'react';
 import {subPages} from './EventAdminPanel';
-import { Menu, Icon } from 'antd';
+import { Menu } from 'antd';
 
 const EventAdminPanelMenu = ({changePage, name}) => {
     const styling = {

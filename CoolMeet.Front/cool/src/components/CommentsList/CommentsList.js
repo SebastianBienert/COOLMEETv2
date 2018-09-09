@@ -14,7 +14,7 @@ class CommentList extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        if(nextProps.comments != this.state.comments) {
+        if(nextProps.comments !== this.state.comments) {
             this.setState({
                 comments : nextProps.comments
             })

@@ -7,7 +7,7 @@ import { DatePicker } from 'antd';
 import 'antd/dist/antd.css';  // or 'antd/dist/antd.less'
 import { withRouter} from 'react-router-dom'
 import moment from 'moment';
-import {FormControl, FormGroup, ControlLabel, Button, Panel, Row, Col, Form, Grid} from 'react-bootstrap';
+import {FormControl, FormGroup, ControlLabel, Button, Row, Col, Form, Grid} from 'react-bootstrap';
 import toastr from 'toastr';
 
 class EditEventSubPage extends React.Component {

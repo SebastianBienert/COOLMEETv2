@@ -1,10 +1,7 @@
 import React from 'react';
 import axios from "axios";
-import UserSettingsMenu from './UserSettingsMenu'
 import {connect} from 'react-redux';
-import withAuth from '../withAuth';
-import { withRouter} from 'react-router-dom'
-import {FormControl, FormGroup,Form, Button, Grid, ControlLabel, Col, Row} from 'react-bootstrap';
+import {FormControl, FormGroup,Form, Button, ControlLabel, Col, Row} from 'react-bootstrap';
 import { FormErrors } from '../FormErrors/FormErrors.js'
 import { BASE_URL } from '../constants';
 import toastr from 'toastr';
@@ -55,7 +52,7 @@ class ChangeUserDataSubPage extends React.Component {
         let validation = this.state.valuesValid;
         switch (fieldName) {
             case 'firstName':
-                if (value.length == 0) {
+                if (value.length === 0) {
                     fieldValidationErrors.firstName = 'Imie jest wymagane';
                     validation.firstName = false;
                 }
@@ -65,7 +62,7 @@ class ChangeUserDataSubPage extends React.Component {
                 }
                 break;
             case 'lastName':
-                if (value.length == 0) {
+                if (value.length === 0) {
                     fieldValidationErrors.lastName = 'Nazwisko jest wymagane';
                     validation.lastName = false;
                 }

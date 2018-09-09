@@ -1,12 +1,12 @@
 import React from "react";
 import axios from "axios";
-import {Link, Redirect} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {BASE_URL} from "../constants";
 import './EventCard.css';
 import withAuth from '../withAuth'
 import { TagCloud } from "react-tagcloud";
 import {Panel, Button, Row, Col} from 'react-bootstrap';
-import { history } from '../../helpers/history';
+
 class EventCard extends React.Component {
 
     constructor(props)

@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import moment from 'moment';
 import {BASE_URL, DEFAULT_EVENT} from "../constants";
-import Map from '../Map/Map';
-import CommentsList from '../CommentsList/CommentsList';
 import { TagCloud } from "react-tagcloud";
 import {ListGroupItem, ListGroup} from 'react-bootstrap';
 
@@ -57,7 +55,6 @@ class EventDescription extends React.Component {
                     count : 10
         }});
         const event = this.props.event.id ? this.props.event : DEFAULT_EVENT;
-        const address = `${event.country} ${event.city} ${event.address}`;
         const startDate = moment(event.startDate).format('MMMM Do YYYY, h:mm');
         const endDate = moment(event.endDate).format('MMMM Do YYYY, h:mm');
         return (

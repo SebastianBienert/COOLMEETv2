@@ -1,14 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { TagCloud } from "react-tagcloud";
 
 class ManageTagCloud extends React.Component {
-    constructor(props){
-        super(props);
-    }
-
     shouldComponentUpdate(nextProps, nextState){
-        if(this.props.tags.length == nextProps.tags.length)
+        if(this.props.tags.length === nextProps.tags.length)
             return false;
         return true;
     } 

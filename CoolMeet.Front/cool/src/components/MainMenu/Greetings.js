@@ -11,11 +11,11 @@ class Greetings extends React.Component {
     }
 
     componentWillReceiveProps(nextProps){
-        if(this.state.firstName != nextProps.user.firstName)
+        if(this.state.firstName !== nextProps.user.firstName)
             this.setState({
                 firstName : nextProps.user.firstName
             })
-        if(this.state.lastName != nextProps.user.lastName)
+        if(this.state.lastName !== nextProps.user.lastName)
             this.setState({
                 lastName : nextProps.user.lastName
             })

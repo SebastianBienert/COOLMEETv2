@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import UserInfo from '../EventInfo/UserInfo';
-import {ListGroup, ListGroupItem, Button, Glyphicon} from 'react-bootstrap';
+import {ListGroup, ListGroupItem, Button} from 'react-bootstrap';
 const ManageUsersSubPage = ({users,administrators, deleteUser, assignRights}) => {
     return (
         <div>

@@ -12,7 +12,7 @@ import { withRouter } from 'react-router-dom'
 import { Layout, Tag} from 'antd';
 import toastr from 'toastr';
 
-const {  Content, Footer, Sider } = Layout;
+const {  Content, Sider } = Layout;
 
 export const subPages = {
     EDIT_EVENT : 'EDIT_EVENT',
@@ -133,7 +133,6 @@ class EventAdminPanel extends React.Component {
     }
 
     handleTagInputConfirm = () => {
-        const state = this.state;
         const inputValue = {
             id : Math.ceil(Math.random() * 1000 + 100),
             name : this.state.tagInputValue

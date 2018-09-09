@@ -32,7 +32,7 @@ class EventInfo extends React.Component {
                     event: event,
                     userAlreadyJoined: this.userAlreadyJoinedEvent(),
                     address: `${event.country} ${event.city} ${event.address}`,
-                    statusUnavailable : event.status.description == EVENT_STATUS.Unavailable,
+                    statusUnavailable : event.status.description === EVENT_STATUS.Unavailable,
                     dataLoading : false
                 });
             })

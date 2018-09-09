@@ -184,7 +184,7 @@ class EventsListComponent extends React.Component {
         const endDateFilter = moment.utc(this.state.dateEndFilter);
         const status = this.state.status;
 
-        this.state.events.map(event => {
+        this.state.events.forEach(event => {
             const endIsInRange = moment(event.endDate).isBetween(startDateFilter, endDateFilter);
             if ( (event.status.id === status || status === 0) && (!all || endIsInRange))
             {
