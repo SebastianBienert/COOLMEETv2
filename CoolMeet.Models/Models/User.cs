@@ -14,6 +14,10 @@ namespace CoolMeet.Models.Models
 
         public string PhotoPath { get; set; }
 
+        public bool AllowBrowsingEvents { get; set; }
+
+        public bool AllowShowingProfile { get; set; }
+
         public virtual ICollection<EventUser> Events { get; set; }
     }
 }

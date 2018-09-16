@@ -11,5 +11,9 @@
         public string PhotoUrl { get; set; }
 
         public string Email { get; set; }
+
+        public bool AllowBrowsingEvents { get; set; }
+
+        public bool AllowShowingProfile { get; set; }
     }
 }

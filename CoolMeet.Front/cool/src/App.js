@@ -18,6 +18,7 @@ import AddEventForm from './components/AddEventForm/AddEventForm';
 import UserSettingsPage from './components/UserSettingsPage/UserSettingsPage';
 import TagPage from './components/TagPage/TagPage';
 import { userActions } from './actions/userActions';
+import UserPage from './components/UserPage/UserPage';
 class App extends Component {
 
   constructor(props){
@@ -69,6 +70,7 @@ class App extends Component {
                 <Route exact path="/eventAdministrationPanel/:id" component={EventAdminPanel} />
                 <Route path="/userSettings" component={UserSettingsPage} />
                 <Route exact path="/events/tag/:tagName" component={TagPage}/>
+                <Route exact path="/user/:id" component={UserPage}/>
               </Switch>
             </div>
         </div>

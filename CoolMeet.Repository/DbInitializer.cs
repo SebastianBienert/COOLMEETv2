@@ -53,7 +53,9 @@ namespace CoolMeet.Repository
                 Created = DateTime.Now,
                 Email = "join@gmail.com",
                 FirstName = "Jan",
-                LastName = "Kowalski"
+                LastName = "Kowalski",
+                AllowBrowsingEvents = true,
+                AllowShowingProfile = true
             };
             var testUser = new User()
             {
@@ -61,6 +63,8 @@ namespace CoolMeet.Repository
                 Email = "Test@gmail.com",
                 FirstName = "Test",
                 LastName = "test",
+                AllowBrowsingEvents = true,
+                AllowShowingProfile = true
             };
             var testEvent = new Event()
             {

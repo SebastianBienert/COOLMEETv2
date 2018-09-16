@@ -42,7 +42,7 @@ namespace CoolMeet.Repository.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Event>> GetLoggedUserEvents(string id)
+        public async Task<IEnumerable<Event>> GetUserEvents(string id)
         {
             var result = await _context.Events
                 .Include(e => e.Users).ThenInclude(eu => eu.User)

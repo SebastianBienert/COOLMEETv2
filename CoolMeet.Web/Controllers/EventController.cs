@@ -48,13 +48,14 @@ namespace CoolMeet.Web.Controllers
         public async Task<IActionResult> GetLoggedUserEvents()
         {
             User user = await GetCurrentUserAsync();
-            var events = await _eventService.GetLoggedUserEvents(user.Id);
+            var events = await _eventService.GetUserEvents(user.Id);
 
             if (events != null)
                 return Ok(events);
 
             return NotFound();
         }
+
 
         [HttpGet("{id}", Name = "GetEventById")]
         public async Task<IActionResult> GetEvent(int id)

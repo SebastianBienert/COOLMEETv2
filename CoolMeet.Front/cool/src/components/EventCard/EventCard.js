@@ -123,7 +123,7 @@ class EventCard extends React.Component {
 		<Panel>
 			<Panel.Body>
                 <Row>
-                    <Col xs={3}>
+                    <Col xs={4}>
                         <h4 className="title">
                             {this.getTitle()} 
                         </h4>
@@ -132,7 +132,7 @@ class EventCard extends React.Component {
                         </p>
                     </Col>
 
-                    <Col xs={3}>
+                    <Col xs={4}>
                         <TagCloud minSize={12}
                             maxSize={35}
                             tags={tagData}
@@ -141,7 +141,7 @@ class EventCard extends React.Component {
                             />
                     </Col>
 
-                    <Col xsOffset={3} xs={3}>
+                    <Col xsOffset={1} xs={3}>
                         {this.checkStatus()}    
                         <div className="card-meta pull-right">{new Date(this.props.event.startDate).toDateString("llll")} - {new Date(this.props.event.endDate).toDateString()}</div>
                         <div className="summary pull-right"> 

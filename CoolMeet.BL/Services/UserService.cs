@@ -75,6 +75,14 @@ namespace CoolMeet.BL.Services
             }
         }
 
+        public async Task<UserDto> UpdateUserSettings(UpdateUserSettingsDTO userSettingsDto, string userId)
+        {
+            if (userSettingsDto == null)
+                return null;
+            var updatedUserEntity = await _repositoryUser.UpdateUserSettings(userSettingsDto, userId);
+            return _mapper.Map<User, UserDto>(updatedUserEntity);
+        }
+
         public bool ConfirmUserPersonality(User user, string password)
         {
             if (user == null)

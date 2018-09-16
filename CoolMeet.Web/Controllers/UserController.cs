@@ -13,9 +13,13 @@ namespace CoolMeet.Web.Controllers
     public class UserController : BaseController
     {
         private readonly IUserService _serviceUser;
-        public UserController(IUserService serviceUser)
+
+        private readonly IEventService _eventService;
+
+        public UserController(IUserService serviceUser, IEventService eventService)
         {
             _serviceUser = serviceUser;
+            _eventService = eventService;
         }
 
         [HttpGet]
@@ -65,6 +69,16 @@ namespace CoolMeet.Web.Controllers
             return NotFound();
         }
 
+        [HttpGet("{id}/events")]
+        public async Task<IActionResult> GetUserEvents(string id)
+        {
+            var events = await _eventService.GetUserEvents(id);
+
+            if (events != null)
+                return Ok(events);
+
+            return NotFound();
+        }
 
 
     }

@@ -92,11 +92,22 @@ namespace CoolMeet.Web.Controllers
             return Ok(updatedUser);
         }
 
+        [HttpPatch("settings")]
+        [Authorize]
+        public async Task<IActionResult> UpdateUserSettings([FromBody] UpdateUserSettingsDTO updateSettingsDto)
+        {
+            var user = await GetCurrentUserAsync();
+            var updatedUser = _userService.UpdateUserSettings(updateSettingsDto, user.Id);
+            if (updatedUser == null)
+                return NotFound();
+            
+            return Ok(updatedUser);
+        }
+
         [HttpPost("photo")]
         [Authorize]
         public async Task<IActionResult> UploadUserPhoto(IFormFile fileUpload)
         {
-            //var file = HttpContext.Request.Form.Files[0];
             if (fileUpload.Length > 0)
             {
                 var updatedDto = await _userService.UpdateUserPhoto(fileUpload, (await GetCurrentUserAsync()).Id);

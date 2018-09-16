@@ -19,7 +19,7 @@ namespace CoolMeet.BL.Interfaces
 
         Task<bool> DeleteEvent(int id);
 
-        Task<IEnumerable<EventDTO>> GetLoggedUserEvents(string id);
+        Task<IEnumerable<EventDTO>> GetUserEvents(string id);
 
         Task<EventDTO> UpdateEvent(AddEventDTO eventDto);
 

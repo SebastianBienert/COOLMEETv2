@@ -21,7 +21,7 @@ namespace CoolMeet.Repository.Interfaces
 
         Task<Event> UpdateEvent(Event eventEntity);
 
-        Task<IEnumerable<Event>> GetLoggedUserEvents(string id);
+        Task<IEnumerable<Event>> GetUserEvents(string id);
 
         Task<IEnumerable<EventUser>> GetAllEventUsers();
 

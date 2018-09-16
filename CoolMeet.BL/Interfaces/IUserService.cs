@@ -27,6 +27,8 @@ namespace CoolMeet.BL.Interfaces
 
         Task<UserDto> UpdateUserPhoto(IFormFile file, string userId);
 
+        Task<UserDto> UpdateUserSettings(UpdateUserSettingsDTO userSettingsDto, string userId);
+
         Task<bool> DeleteUser(string id);
 
         bool ConfirmUserPersonality(User user, string password);

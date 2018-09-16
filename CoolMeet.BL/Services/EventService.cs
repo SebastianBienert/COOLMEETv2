@@ -60,9 +60,9 @@ namespace CoolMeet.BL.Services
             return await _eventRepository.DeleteEvent(id);
         }
 
-        public async Task<IEnumerable<EventDTO>> GetLoggedUserEvents(string id)
+        public async Task<IEnumerable<EventDTO>> GetUserEvents(string id)
         {
-            var events = await _eventRepository.GetLoggedUserEvents(id);
+            var events = await _eventRepository.GetUserEvents(id);
             return _mapper.Map<IEnumerable<EventDTO>>(events);
         }
 

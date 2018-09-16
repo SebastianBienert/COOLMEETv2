@@ -7,7 +7,7 @@ import { Layout } from 'antd';
 import ChangePasswordSubPage from './ChangePasswordSubPage';
 import ChangeUserDataSubPage from './ChangeUserDataSubPage';
 import ChangeUserPhotoSubPage from './ChangeUserPhotoSubPage';
-
+import ChangeProfileSettings from './ChangeProfileSettings';
 const { Content, Sider } = Layout;
 
 export const subPages = {
@@ -35,6 +35,11 @@ class UserSettingsPage extends React.Component {
             }
             case subPages.CHANGE_PHOTO:{
                 return <ChangeUserPhotoSubPage />
+            }
+            case subPages.CHANGE_SETTINGS:{
+                return <ChangeProfileSettings 
+                                allowShowingProfile={this.props.user.allowShowingProfile}
+                                allowBrowsingEvents={this.props.user.allowBrowsingEvents} />
             }
             default:{
                 return 'XD';

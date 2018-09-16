@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using CoolMeet.Models.Dtos;
+using CoolMeet.Models.Dtos.Security;
 using CoolMeet.Models.Models;
 using CoolMeet.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -63,6 +64,19 @@ namespace CoolMeet.Repository.Repositories
             if (entityToUpdate != null)
             {
                 _contextUser.Entry(entityToUpdate).CurrentValues.SetValues(user);
+                await _contextUser.SaveChangesAsync();
+                return entityToUpdate;
+            }
+
+            return null;
+        }
+
+        public async Task<User> UpdateUserSettings(UpdateUserSettingsDTO userSettingsDto, string userId)
+        {
+            var entityToUpdate = await _contextUser.Users.SingleOrDefaultAsync(u => u.Id == userId);
+            if (entityToUpdate != null)
+            {
+                _contextUser.Entry(entityToUpdate).CurrentValues.SetValues(userSettingsDto);
                 await _contextUser.SaveChangesAsync();
                 return entityToUpdate;
             }
