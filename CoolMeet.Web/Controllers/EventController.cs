@@ -30,13 +30,15 @@ namespace CoolMeet.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetEvents([FromQuery] string tag = null)
+        public async Task<IActionResult> GetEvents([FromQuery] string tag = null, [FromQuery] string city = null)
         {
             IEnumerable<EventDTO> events;
-            if (tag == null)
+            if (tag == null && city == null)
                 events = await _eventService.GetAllEvents();
-            else
+            else if (tag != null)
                 events = await _eventService.GetEventsByTag(tag);
+            else
+                events = await _eventService.GetEventsByCity(city);
 
             if (events != null)
                 return Ok(events);
@@ -54,6 +56,13 @@ namespace CoolMeet.Web.Controllers
                 return Ok(events);
 
             return NotFound();
+        }
+
+        [HttpGet("cities")]
+        public async Task<IActionResult> GetCities([FromQuery] string query)
+        {
+            var result = await _eventService.GetCities(query);
+            return Ok(result);
         }
 
 

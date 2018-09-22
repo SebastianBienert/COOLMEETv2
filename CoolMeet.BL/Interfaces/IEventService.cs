@@ -13,6 +13,10 @@ namespace CoolMeet.BL.Interfaces
 
         Task<IEnumerable<EventDTO>> GetEventsByTag(string tag);
 
+        Task<IEnumerable<EventDTO>> GetEventsByCity(string city);
+
+        Task<IEnumerable<string>> GetCities(string query = null);
+
         Task<EventDTO> GetEvent(int id);
 
         Task<EventDTO> AddEvent(AddEventDTO eventDto);

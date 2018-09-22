@@ -28,6 +28,7 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
+    "throttle-debounce": "^2.0.1",
     "toastr": "^2.1.4"
   },
   "scripts": {

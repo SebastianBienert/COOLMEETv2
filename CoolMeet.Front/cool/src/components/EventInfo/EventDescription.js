@@ -65,10 +65,10 @@ class EventDescription extends React.Component {
                     <ListGroupItem header="Opis">
                         {event.description}
                     </ListGroupItem>
-                    <ListGroupItem header="Data startu" style={{'text-transform' : 'capitalize'}}>
+                    <ListGroupItem header="Data startu" style={{'textTransform' : 'capitalize'}}>
                         {startDate}
                     </ListGroupItem>
-                    <ListGroupItem header="Data konca" style={{'text-transform' : 'capitalize'}}>
+                    <ListGroupItem header="Data konca" style={{'textTransform' : 'capitalize'}}>
                         {endDate}
                     </ListGroupItem>
                     <ListGroupItem header="Adres">

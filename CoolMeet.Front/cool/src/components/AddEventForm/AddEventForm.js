@@ -5,7 +5,7 @@ import withAuth from '../withAuth';
 import {withRouter} from 'react-router-dom';
 import { FormErrors } from '../FormErrors/FormErrors.js';
 import { DatePicker } from 'antd';
-import {FormControl, FormGroup, ControlLabel, Button, Panel, Row, Col} from 'react-bootstrap';
+import {FormControl, Form, Grid, FormGroup, ControlLabel, Button, Panel, Row, Col} from 'react-bootstrap';
 import 'antd/dist/antd.css';  // or 'antd/dist/antd.less'
 class AddEventForm extends React.Component {
     constructor() {
@@ -231,10 +231,9 @@ class AddEventForm extends React.Component {
     render() {
         const { startValue, endValue, endOpen } = this.state;
         return (
-            <div>
-                <form onSubmit={this.handleSubmit}>
-                    <h4 className="text-center">Dodaj wydarzenie!</h4>
-
+            <Grid className="greyForm">
+                <Form onSubmit={this.handleSubmit}>
+                    <h1 className="h3 mb-3 font-weight-normal text-center">Dodaj wydarzenie</h1>
                     <FormGroup controlId="name">
                         <FormControl name="name" type="text" placeholder="Nazwa wydarzenia"
                             onChange={this.handleInputChange} required />
@@ -299,7 +298,7 @@ class AddEventForm extends React.Component {
                     </FormGroup>
 
                     <FormGroup controlId="description">
-                        <FormControl name="description" type="text" placeholder="Opis" value={this.state.description}
+                        <FormControl componentClass="textarea" name="description" type="text" placeholder="Opis" value={this.state.description}
                             onChange={this.handleInputChange} />
                     </FormGroup>
 
@@ -314,7 +313,7 @@ class AddEventForm extends React.Component {
                         <Button className="btn-outline-secondary" disabled={!this.state.formValid} type="submit">Dodaj!</Button>
                     </div>
 
-                </form>
+                </Form>
                 <div>
                 {
                     !this.state.formValid ?
@@ -325,7 +324,7 @@ class AddEventForm extends React.Component {
                         null
                 }
                 </div>
-            </div >
+            </Grid >
 
 
         )

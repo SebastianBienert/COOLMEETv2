@@ -9,7 +9,7 @@ const UserList = ({users}) => {
             <ListGroup>
                 {users.map(user => {
                     return(
-                        <ListGroupItem>
+                        <ListGroupItem key={user.id} >
                             <UserInfo key={user.id} {...user}></UserInfo>
                         </ListGroupItem>
                     );

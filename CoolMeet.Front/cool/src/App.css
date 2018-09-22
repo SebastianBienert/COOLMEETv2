@@ -1,7 +1,11 @@
 .App {
   text-align: center;
 }
-
+.mainContainer{
+  background-image : url("./assets/background2.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
@@ -20,6 +24,15 @@
 
 .App-intro {
   font-size: large;
+}
+
+.navbar{
+  margin-bottom: 20px !important;
+}
+
+.greyForm{
+  background-color : #f8f8f8;
+  border-radius : 10px;
 }
 
 

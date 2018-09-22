@@ -42,6 +42,30 @@ namespace CoolMeet.Repository.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Event>> GetEventsByCity(string city)
+        {
+            return await _context.Events
+                .Include(e => e.Users).ThenInclude(eu => eu.User)
+                .Include(s => s.Status)
+                .Include(c => c.Comments)
+                .Include(e => e.TagEvents).ThenInclude(te => te.Tag)
+                .Where(e => e.City == city)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<string>> GetCities(string query = null)
+        {
+            if (query == null)
+                return await _context.Events
+                    .Select(e => e.City)
+                    .ToListAsync();
+
+            return await _context.Events
+                .Where(e => EF.Functions.Like(e.City, $"%{query}%"))
+                .Select(e => e.City)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Event>> GetUserEvents(string id)
         {
             var result = await _context.Events

@@ -62,7 +62,7 @@ class EventInfo extends React.Component {
                             <Row>
                                 <Col xs={3}><EventDescription event={this.state.event} key={event.id} /></Col>
                                 <Col xs={7}>
-                                    <Map address={address} name={event.name} />
+                                    <Map height={450} events={event.id == 0 ? [] : [event]}/>
                                 </Col>
                                 <Col xs={2}><UserList users={event.users}></UserList></Col>
                             </Row>

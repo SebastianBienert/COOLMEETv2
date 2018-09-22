@@ -13,6 +13,10 @@ namespace CoolMeet.Repository.Interfaces
 
         Task<IEnumerable<Event>> GetEventsByTag(string tag);
 
+        Task<IEnumerable<Event>> GetEventsByCity(string city);
+
+        Task<IEnumerable<string>> GetCities(string query = null);
+
         Task<Event> GetEvent(int id);
 
         Task<Event> AddEvent(Event eventEntity);

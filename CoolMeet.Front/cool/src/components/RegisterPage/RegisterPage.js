@@ -112,7 +112,7 @@ class RegisterPage extends React.Component {
 
     render() {
         return (
-            <Grid>
+            <Grid className="greyForm">
                 <Form onSubmit={this.handleSubmit}>
                     <h1 className="h3 mb-3 font-weight-normal text-center">Zarejestruj się</h1>
                     <FormGroup controlId="firstName">

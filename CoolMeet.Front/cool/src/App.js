@@ -19,6 +19,7 @@ import UserSettingsPage from './components/UserSettingsPage/UserSettingsPage';
 import TagPage from './components/TagPage/TagPage';
 import { userActions } from './actions/userActions';
 import UserPage from './components/UserPage/UserPage';
+import CityMap from './components/Map/CityMap';
 class App extends Component {
 
   constructor(props){
@@ -56,7 +57,7 @@ class App extends Component {
   render() {
       return (
         <Router history={history}>
-        <div className="container-fluid">
+        <div className="container-fluid mainContainer" style={{height : "100%"}}>
         <MainMenu/>
             <div className="col-12">
               <Switch>
@@ -71,6 +72,7 @@ class App extends Component {
                 <Route path="/userSettings" component={UserSettingsPage} />
                 <Route exact path="/events/tag/:tagName" component={TagPage}/>
                 <Route exact path="/user/:id" component={UserPage}/>
+                <Route path="/cityMap" component={CityMap} />
               </Switch>
             </div>
         </div>
