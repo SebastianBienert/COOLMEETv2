@@ -1,7 +1,7 @@
 import { userConstants } from '../constants/userConstants';
 import {authService} from '../services/AuthService';
 import { history } from '../helpers/history';
-import {toastr} from 'toastr';
+
 export const userActions = {
     login,
     logout,
@@ -30,7 +30,6 @@ function login(email, password) {
                 },
                 error => {
                     dispatch(failure(error.toString()));
-                    toastr.error("Logowanie nie powiodlo sie");
                 }
             );
     };

@@ -7,8 +7,8 @@ const ManageUsersSubPage = ({users,administrators, deleteUser, assignRights}) =>
             <ListGroup>
                 {users.map(user => {
                     return(
-                        <ListGroupItem>
-                            <UserInfo key={user.id} {...user}></UserInfo>
+                        <ListGroupItem key={user.id}>
+                            <UserInfo {...user}></UserInfo>
                             <Button 
                                     disabled={administrators.some(a => a.id === user.id)}
                                     value={user.id} bsStyle="primary" 

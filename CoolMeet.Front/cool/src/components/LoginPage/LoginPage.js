@@ -3,7 +3,8 @@ import './LoginPage.css'
 import {connect} from 'react-redux';
 import {userActions} from '../../actions/userActions'
 import { FormErrors } from '../FormErrors/FormErrors.js'
-
+import toastr from 'toastr';
+import {Panel} from 'react-bootstrap';
 class LoginPage extends React.Component {
   constructor() {
     super();
@@ -58,6 +59,12 @@ class LoginPage extends React.Component {
     this.setState({ formValid: this.state.emailValid && this.state.passwordValid });
   }
 
+  componentWillReceiveProps(nextProps){
+    if(!!nextProps.logginFailure) {
+        toastr.error("Logowanie nie powiodło sie");
+    }
+  }
+
   componentWillMount() {
     if (this.props.loggedIn) {
       this.props.history.replace('/');
@@ -82,10 +89,10 @@ class LoginPage extends React.Component {
           <button className="btn btn-lg btn-primary btn-block" disabled={!this.state.formValid} type="submit">Zaloguj się</button>
         </form>
         {
-          !this.state.formValid ?
-            <div className="card">
+          !this.state.formValid && (this.state.formErrors.email.length > 0 || this.state.formErrors.password.length > 0) ?
+            <Panel>
               <FormErrors formErrors={this.state.formErrors} />
-            </div>
+            </Panel>
             :
             null
         }
@@ -95,10 +102,11 @@ class LoginPage extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { loggingIn, loggedIn } = state.authentication;
+  const { loggingIn, loggedIn, logginFailure } = state.authentication;
   return {
       loggingIn,
-      loggedIn
+      loggedIn,
+      logginFailure
   };
 }
 

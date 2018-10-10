@@ -4,7 +4,7 @@ import {BASE_URL, DEFAULT_EVENT} from "../constants";
 import withAuth from '../withAuth';
 import EditEventSubPage from './EditEventSubPage';
 import EventAdminPanelMenu from './EventAdminPanelMenu';
-import DeleteEventSubPage from './DeleteEvenSubPage';
+import DeleteEventSubPage from './DeleteEventSubPage';
 import ManageUsersSubPage from './ManageUsersSubPage';
 import ManageTagsSubPage from './ManageTagsSubPage';
 import '../EventAdminPanel/EventAdminPanel.css';

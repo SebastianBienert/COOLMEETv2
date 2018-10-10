@@ -1,10 +1,19 @@
 .App {
   text-align: center;
 }
-.mainContainer{
+
+body{
+  min-height: 100% !important; 
   background-image : url("./assets/background2.jpg");
   background-repeat: no-repeat;
   background-size: 100% 100%;
+  background-attachment: fixed;
+}
+
+.mainContainer{
+  height:100%;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
 }
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
