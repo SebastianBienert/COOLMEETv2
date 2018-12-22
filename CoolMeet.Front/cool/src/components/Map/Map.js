@@ -51,7 +51,7 @@ class Map extends React.Component {
         events.forEach(e => {
             let eventWithCoords = Object.assign({}, e)
             const address = `${e.country} ${e.city} ${e.address}`;
-            promises.push(Geocode.fromAddress(address)
+            promises.push(Geocode.fromAddress(address, 'AIzaSyBfHYANteBHqCaytRIED3tJ2SzthNoByyY')
                 .then(response => {
                     const { lat, lng } = response.results[0].geometry.location;
                     console.log("LAT, LNG: ", lat, lng);
@@ -77,7 +77,7 @@ class Map extends React.Component {
         const MyMapComponent =  compose(
             withProps({
               googleMapURL:
-                "https://maps.googleapis.com/maps/api/js?key=AIzaSyCsa_1pNIHdjYwaH0b3S5SwQjH22beM3Y8&v=3.exp&libraries=geometry,drawing,places",
+                "https://maps.googleapis.com/maps/api/js?key=AIzaSyBfHYANteBHqCaytRIED3tJ2SzthNoByyY&v=3.exp&libraries=geometry,drawing,places",
               loadingElement: <div className="loader"/>,
               containerElement: <div className="containerElement" style={{height : this.state.height + 'px'}}/>,
               mapElement: <div className="mapElement" />

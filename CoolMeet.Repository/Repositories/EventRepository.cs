@@ -58,11 +58,13 @@ namespace CoolMeet.Repository.Repositories
             if (query == null)
                 return await _context.Events
                     .Select(e => e.City)
+                    .Distinct()
                     .ToListAsync();
 
             return await _context.Events
                 .Where(e => EF.Functions.Like(e.City, $"%{query}%"))
                 .Select(e => e.City)
+                .Distinct()
                 .ToListAsync();
         }
 

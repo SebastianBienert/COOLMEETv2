@@ -78,7 +78,6 @@ class CommentList extends Component {
 
     renderComments = () => {
         if (this.props.comments) {
-            console.log("Comments:", this.props.comments)
             return this.state.comments.map((comment) => <Comment 
             editable={comment.user.id === this.props.user.id}
             id={comment.id}

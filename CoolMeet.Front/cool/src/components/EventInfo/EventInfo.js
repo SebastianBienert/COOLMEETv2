@@ -30,7 +30,7 @@ class EventInfo extends React.Component {
                 const event = response.data;
                 this.setState({
                     event: event,
-                    userAlreadyJoined: this.userAlreadyJoinedEvent(),
+                    userAlreadyJoined: this.userAlreadyJoinedEvent(event),
                     address: `${event.country} ${event.city} ${event.address}`,
                     statusUnavailable : event.status.description === EVENT_STATUS.Unavailable,
                     dataLoading : false
@@ -39,8 +39,8 @@ class EventInfo extends React.Component {
             .catch(error => console.log(error));
     }
 
-    userAlreadyJoinedEvent = () => {
-        const allIds = this.state.event.users.map(user => user.id);
+    userAlreadyJoinedEvent = (event) => {
+        const allIds = event.users.map(user => user.id);
         return allIds.includes(this.props.user.id)
     }
 
