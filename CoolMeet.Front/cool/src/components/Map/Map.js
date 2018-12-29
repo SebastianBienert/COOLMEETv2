@@ -1,6 +1,7 @@
 import React from 'react';
 import {withScriptjs,withGoogleMap,GoogleMap,Marker,InfoBox,InfoWindow} from "react-google-maps";
 import { compose, withProps } from "recompose";
+import {GOOGLE_API} from '../api_key';
 import Geocode from '../../geocode'
 import '../Map/Map.css';
 
@@ -51,7 +52,7 @@ class Map extends React.Component {
         events.forEach(e => {
             let eventWithCoords = Object.assign({}, e)
             const address = `${e.country} ${e.city} ${e.address}`;
-            promises.push(Geocode.fromAddress(address, 'AIzaSyBfHYANteBHqCaytRIED3tJ2SzthNoByyY')
+            promises.push(Geocode.fromAddress(address, GOOGLE_API)
                 .then(response => {
                     const { lat, lng } = response.results[0].geometry.location;
                     console.log("LAT, LNG: ", lat, lng);
@@ -77,7 +78,7 @@ class Map extends React.Component {
         const MyMapComponent =  compose(
             withProps({
               googleMapURL:
-                "https://maps.googleapis.com/maps/api/js?key=AIzaSyBfHYANteBHqCaytRIED3tJ2SzthNoByyY&v=3.exp&libraries=geometry,drawing,places",
+                `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API}&v=3.exp&libraries=geometry,drawing,places`,
               loadingElement: <div className="loader"/>,
               containerElement: <div className="containerElement" style={{height : this.state.height + 'px'}}/>,
               mapElement: <div className="mapElement" />
